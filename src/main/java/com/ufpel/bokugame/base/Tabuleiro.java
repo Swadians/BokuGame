@@ -11,35 +11,35 @@ package com.ufpel.bokugame.base;
  */
 public class Tabuleiro implements Cloneable {
 
-    private int[][] colunas;
+    private short[][] colunas;
 
     public Tabuleiro() {
-        this.colunas = new int[11][];
+        this.colunas = new short[11][];
     }
 
-    public Tabuleiro(int[][] tabuleiro) {
+    public Tabuleiro(short[][] tabuleiro) {
         this.colunas = tabuleiro;
     }
 
-    public void setValorColuna(int numColuna, int[] valores) {
+    public void setValorColuna(short numColuna, short[] valores) {
 
         this.colunas[numColuna] = valores;
     }
 
-    public void setJogada(int coluna, int linha, int codJogador) {
+    public void setJogada(short coluna, short linha, short codJogador) {
         this.colunas[coluna][linha] = codJogador;
     }
 
-    public int[][] getColunas() {
+    public short[][] getColunas() {
         return colunas;
     }
 
     @Override
     public Object clone() {
-        int[][] colunasCopy = new int[11][];
+        short[][] colunasCopy = new short[11][];
 
-        for (int i = 0; i < this.colunas.length; i++) {
-            colunasCopy[i] = new int[this.colunas[i].length];
+        for (short i = 0; i < this.colunas.length; i++) {
+            colunasCopy[i] = new short[this.colunas[i].length];
             System.arraycopy(this.colunas[i], 0, colunasCopy[i], 0, this.colunas[i].length);
         }
 

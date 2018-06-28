@@ -15,17 +15,17 @@ import java.util.List;
  */
 public class TabuleiroUtil {
 
-    public static List<Nodo> getJogadas(Nodo pai, int codJogador) {
+    public static List<Nodo> geraJogadas(Nodo pai, short codJogador) {
         List<Nodo> nodos = new ArrayList<>();
 
-        int[][] arrayTabuleiro = pai.getArrayTabuleiro();
-        for (int i = 0; i < arrayTabuleiro.length; i++) {
-            for (int j = 0; j < arrayTabuleiro[i].length; j++) {
+        short[][] arrayTabuleiro = pai.getArrayTabuleiro();
+        for (short i = 0; i < arrayTabuleiro.length; i++) {
+            for (short j = 0; j < arrayTabuleiro[i].length; j++) {
                 int valorAtual = pai.getArrayTabuleiro()[i][j];
                 if (valorAtual == 0) {
                     Nodo novo = (Nodo) pai.clone();
                     novo.pai = pai;
-
+                    novo.setJogador(codJogador);
                     novo.setJogada(i, j, codJogador);
 
                     nodos.add(novo);
@@ -33,6 +33,27 @@ public class TabuleiroUtil {
             }
         }
         return nodos;
+    }
+
+    public static Nodo getPrimeiraJogada(Nodo filho) {
+        short count = 0;
+        Nodo anterior = filho;
+        while (filho.pai != null) {
+            anterior = filho;
+            filho = filho.pai;
+            count++;
+        }
+
+        return anterior;
+    }
+
+    public static int Profundidade(Nodo base) {
+        short count = 0;
+        while (base != null) {
+            base = base.pai;
+            count++;
+        }
+        return count;
     }
 
 }

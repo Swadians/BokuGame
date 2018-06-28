@@ -9,12 +9,12 @@ package com.ufpel.bokugame.base;
  *
  * @author WeslenSchiavon
  */
-public class Tupla {
+public class Tupla implements Cloneable {
 
-    public int coluna;
-    public int linha;
+    public short coluna;
+    public short linha;
 
-    public Tupla(int coluna, int linha) {
+    public Tupla(short coluna, short linha) {
         this.coluna = coluna;
         this.linha = linha;
     }
@@ -22,6 +22,12 @@ public class Tupla {
     @Override
     public String toString() {
         return "Tupla{" + "coluna=" + coluna + ", linha=" + linha + '}';
+    }
+
+    @Override
+    public Object clone() {
+
+        return new Tupla(coluna, linha);
     }
 
 }

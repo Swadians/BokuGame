@@ -71,9 +71,15 @@ public class HttpUtil {
 
             String[] colunaLinha = retorno.trim().replaceAll("\\(|\\)", "").split(",");
 
-            return new Tupla(Integer.parseInt(colunaLinha[0]), Integer.parseInt(colunaLinha[1]));
+            short valorColuna = Short.parseShort(colunaLinha[0]);
+            valorColuna--;
+
+            short valorLinha = Short.parseShort(colunaLinha[1]);
+            valorLinha--;
+
+            return new Tupla(valorColuna, valorLinha);
         } catch (IOException e) {
-            return new Tupla(0, 0);
+            return new Tupla((short) 0, (short) 0);
         }
     }
 
@@ -90,8 +96,14 @@ public class HttpUtil {
         String[] split = movimentos.replaceAll("\\)|\\(|\\[|\\]", " ").split(",");
 
         List<Tupla> tuplas = new ArrayList<>(split.length);
-        for (int i = 0; i < split.length; i += 2) {
-            tuplas.add(new Tupla(Integer.parseInt(split[i].trim()), Integer.parseInt(split[i + 1].trim())));
+        for (short i = 0; i < split.length; i += 2) {
+            short valorColuna = Short.parseShort(split[i].trim());
+            valorColuna--;
+
+            short valorLinha = Short.parseShort(split[i + 1].trim());
+            valorLinha--;
+
+            tuplas.add(new Tupla(valorColuna, valorLinha));
         }
 
         return tuplas;
@@ -127,10 +139,10 @@ public class HttpUtil {
         String[] listaDeValores = tabuleiroFiltrado.split("] *,?");
 
         Tabuleiro tabuleiro = new Tabuleiro();
-        for (int i = 0; i < listaDeValores.length; i++) {
+        for (short i = 0; i < listaDeValores.length; i++) {
             String[] valoresColunaAtual = listaDeValores[i].split(",");
 
-            int[] temp = ArrayParsInt(valoresColunaAtual, i);
+            short[] temp = ArrayParsShort(valoresColunaAtual, i);
             tabuleiro.setValorColuna(i, temp);
         }
 
@@ -138,18 +150,18 @@ public class HttpUtil {
 
     }
 
-    private int[] ArrayParsInt(String[] valoresColunaAtual, int i) throws NumberFormatException {
-        int[] temp = new int[valoresColunaAtual.length];
-        for (int j = 0; j < valoresColunaAtual.length; j++) {
-            temp[j] = Integer.parseInt(valoresColunaAtual[j]);
+    private short[] ArrayParsShort(String[] valoresColunaAtual, short i) throws NumberFormatException {
+        short[] temp = new short[valoresColunaAtual.length];
+        for (short j = 0; j < valoresColunaAtual.length; j++) {
+            temp[j] = Short.parseShort(valoresColunaAtual[j]);
         }
         return temp;
     }
 
-    public boolean movePeca(int numJogador, int coluna, int linha) {
+    public boolean movePeca(short numJogador, short coluna, short linha) {
 
         try {
-            String urlMoveFormatada = String.format(this.urlMove, numJogador, coluna, linha);
+            String urlMoveFormatada = String.format(this.urlMove, numJogador, ++coluna, ++linha);
             URL url = new URL(urlMoveFormatada);
             HttpURLConnection connection = makeRequest(url);
 
