@@ -23,20 +23,22 @@ public class Test {
     public static void main(String[] args) throws MalformedURLException, IOException {
         Busca busca = new BuscaProfundidadeParalela();
 
-        HttpUtil httpUtil = new HttpUtil("http://192.168.0.102:8080");
+        HttpUtil httpUtil = new HttpUtil("http://192.168.0.108:8080");
 
         for (int i = 0; i < 10; i++) {
             System.out.println("Turno - " + i);
             Nodo raiz = new Nodo(httpUtil.getTabuleiroAtual());
+            raiz.setJogador(CodigoTabuleiro.JOGADOR_B);
 
-            Nodo resp = busca.Busca(raiz, (short) 5, CodigoTabuleiro.JOGADOR_A, new HeuristicaA());
+            Nodo resp = busca.Busca(raiz, (short) 4, CodigoTabuleiro.JOGADOR_A, new HeuristicaA());
 
             httpUtil.movePeca(CodigoTabuleiro.JOGADOR_A, resp.getJogada().coluna, resp.getJogada().linha);
 
             //------------------------------------------------------------------------------------------------
             raiz = new Nodo(httpUtil.getTabuleiroAtual());
+            raiz.setJogador(CodigoTabuleiro.JOGADOR_A);
 
-            resp = busca.Busca(raiz, (short) 5, CodigoTabuleiro.JOGADOR_B, new HeuristicaA());
+            resp = busca.Busca(raiz, (short) 4, CodigoTabuleiro.JOGADOR_B, new HeuristicaA());
 
             httpUtil.movePeca(CodigoTabuleiro.JOGADOR_B, resp.getJogada().coluna, resp.getJogada().linha);
         }

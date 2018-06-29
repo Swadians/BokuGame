@@ -6,10 +6,10 @@
 package com.ufpel.bokugame.ia;
 
 import com.ufpel.bokugame.base.Nodo;
+import com.ufpel.bokugame.util.IaUtil;
 import com.ufpel.bokugame.util.TabuleiroUtil;
+import java.util.Collections;
 import java.util.List;
-import java.util.Queue;
-import java.util.concurrent.PriorityBlockingQueue;
 
 /**
  *
@@ -20,15 +20,18 @@ public class BuscaProfundidadeParalela implements Busca {
     @Override
     public Nodo Busca(Nodo base, short profundidade, short codJogador, Heuristica heuristica) {
         List<Nodo> jogadasPossiveis = TabuleiroUtil.geraJogadas(base, codJogador);
-        Queue<Nodo> respostas = new PriorityBlockingQueue<>();
 
-        Busca buscaProfundidadeIterativa = new BuscaProfundidadeSequencial();
+        Busca buscaProfundidadeIterativa = new BuscaMinMax();
 
+        short bestPleis = IaUtil.calcBestPleis(jogadasPossiveis.size());
+        System.out.println(bestPleis);
         jogadasPossiveis.parallelStream().forEach(nodo -> {
-            respostas.add(buscaProfundidadeIterativa.Busca(nodo, profundidade, codJogador, heuristica));
+            buscaProfundidadeIterativa.Busca(nodo, bestPleis, codJogador, heuristica);
         });
 
-        return respostas.poll();
+        Collections.sort(jogadasPossiveis);
+
+        return jogadasPossiveis.get(0);
     }
 
 }

@@ -13,7 +13,7 @@ import com.ufpel.bokugame.util.TabuleiroUtil;
  *
  * @author WeslenSchiavon
  */
-public class HeuristicaA extends Heuristica {
+public class HeuristicaB extends Heuristica {
 
     @Override
     public void calcAndSet(Nodo nodo) {

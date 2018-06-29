@@ -16,21 +16,25 @@ public class Nodo implements Cloneable, Comparable<Nodo> {
     private short Jogador;
     private boolean estadoFinal;
     private Tupla jogada;
+    private boolean visitado;
     public Nodo pai;
 
     public Nodo() {
         this.tabuleiro = new Tabuleiro();
         this.jogada = new Tupla((short) -1, (short) -1);
+        this.valorHeuristico = -1;
     }
 
     public Nodo(Tabuleiro tabuleiro) {
         this.tabuleiro = tabuleiro;
         this.jogada = new Tupla((short) -1, (short) -1);
+        this.valorHeuristico = -1;
     }
 
     public Nodo(Tabuleiro tabuleiro, Tupla jogada) {
         this.tabuleiro = tabuleiro;
         this.jogada = jogada;
+        this.valorHeuristico = -1;
     }
 
     public Tabuleiro getTabuleiro() {
@@ -74,6 +78,14 @@ public class Nodo implements Cloneable, Comparable<Nodo> {
 
     public Tupla getJogada() {
         return jogada;
+    }
+
+    public boolean isVisitado() {
+        return visitado;
+    }
+
+    public void setVisitado() {
+        this.visitado = true;
     }
 
     @Override
