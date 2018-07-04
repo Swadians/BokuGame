@@ -41,6 +41,7 @@ public class BuscaMinMax implements Busca {
                     CalcMinMax(aProcurar, codJogador, pilhaDeNodos);
                 }
             } else {
+
                 if (profundidadePar) {
                     short tmp = aProcurar.getValorHeuristico();
                     heuristica.calcAndSet(aProcurar);
@@ -53,11 +54,8 @@ public class BuscaMinMax implements Busca {
                 } else {
                     this.CalcMinMax(aProcurar, codJogador, pilhaDeNodos);
                 }
-
             }
-
         }
-
         return base;
     }
 
@@ -77,24 +75,7 @@ public class BuscaMinMax implements Busca {
             }
             pilhaDeNodos.pop();
         }
-    }
 
-    private void CalcMinMaxPar(Nodo aProcurar, short codJogador, Stack<Nodo> pilhaDeNodos) {
-        if (aProcurar.getJogador() == codJogador) {
-            short valorHeuristicoPai = aProcurar.pai.getValorHeuristico();
-            short valorHeuristicoFilho = aProcurar.getValorHeuristico();
-            if ((valorHeuristicoPai == -1) || (valorHeuristicoPai < valorHeuristicoFilho)) {
-                aProcurar.pai.setValorHeuristico(valorHeuristicoFilho);
-            }
-            pilhaDeNodos.pop();
-        } else {
-            short valorHeuristicoPai = aProcurar.pai.getValorHeuristico();
-            short valorHeuristicoFilho = aProcurar.getValorHeuristico();
-            if ((valorHeuristicoPai == -1) || (valorHeuristicoPai > valorHeuristicoFilho)) {
-                aProcurar.pai.setValorHeuristico(valorHeuristicoFilho);
-            }
-            pilhaDeNodos.pop();
-        }
     }
 
     private short TrocaJogador(short codJogatorAtual) {

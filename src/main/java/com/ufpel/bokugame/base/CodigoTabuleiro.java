@@ -14,5 +14,6 @@ public class CodigoTabuleiro {
     public static short JOGADOR_A = 1;
     public static short JOGADOR_B = 2;
     public static short VAZIO = 0;
+    public static short QTD_COLUNAS = 11;
 
 }

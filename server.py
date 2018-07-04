@@ -263,6 +263,7 @@ class Game:
             while coords!=None:
                 column = coords[0]
                 line = coords[1]
+
                 state = self.board[column-1][line-1]
                 s += str(state)
                 if "11111" in s:

@@ -5,9 +5,11 @@
  */
 package com.ufpel.bokugame.ia;
 
-import com.ufpel.bokugame.base.CodigoTabuleiro;
 import com.ufpel.bokugame.base.Nodo;
+import com.ufpel.bokugame.base.Tupla;
+import com.ufpel.bokugame.util.TabPreEstadosUtil;
 import com.ufpel.bokugame.util.TabuleiroUtil;
+import java.util.List;
 
 /**
  *
@@ -15,32 +17,108 @@ import com.ufpel.bokugame.util.TabuleiroUtil;
  */
 public abstract class Heuristica {
 
-    protected final short pesoVitoria = 100;
+    protected final short pesoEstadoNormal = 1;
+    protected final short pesoEstadoRegular = 5;
+    protected final short pesoEstadoBom = 15;
+    protected final short pesoEstadoOtimo = 50;
+    protected final short pesoCancelDerrota = 500;
+    protected final short pesoEstadoVitoria = 1000;
 
     public abstract void calcAndSet(Nodo nodo);
 
     public void verificaESetaEstadoFinal(Nodo nodo) {
-        short valorHeuristico = 0;
-        short[][] colunas = nodo.getArrayTabuleiro();
 
-        for (short[] coluna : colunas) {
-            short countPontosJogador_A = 0;
-            short countPontosJogador_B = 0;
-            for (int j = 0; j < coluna.length; j++) {
-                if (CodigoTabuleiro.JOGADOR_A == coluna[j]) {
-                    countPontosJogador_A++;
-                } else if (CodigoTabuleiro.JOGADOR_B == coluna[j]) {
-                    countPontosJogador_B++;
-                }
-            }
+        short valorHeuristicoColunas = this.verificaEstadoFinalColunas(nodo);
+        short valorHeuristicoDiagonalPrincipal = this.verificaEstadoFinalDiagonalPrincipal(nodo);
+        short valorHeuristicoDiagonalSecundaria = this.verificaEstadoFinalDiagonalSecundaria(nodo);
 
-            if (countPontosJogador_A == 5) {
-                nodo.setEstadoFinal();
-                valorHeuristico = (short) (this.pesoVitoria / TabuleiroUtil.Profundidade(nodo));
-            } else if (countPontosJogador_B == 5) {
-                nodo.setEstadoFinal();
-                valorHeuristico = (short) (this.pesoVitoria / TabuleiroUtil.Profundidade(nodo));
+        short valorTotal = (short) (valorHeuristicoColunas
+                + valorHeuristicoDiagonalPrincipal
+                + valorHeuristicoDiagonalSecundaria);
+
+        if (valorTotal > 0) {
+            nodo.setValorHeuristico(valorTotal);
+        }
+
+    }
+
+    private short verificaEstadoFinalColunas(Nodo nodo) {
+        short[][] tabuleiro = nodo.getArrayTabuleiro();
+        Tupla jogada = nodo.getJogada();
+
+        short countColunaPontos = 0;
+
+        List<short[]> estadosVitoria = TabPreEstadosUtil.getEstadosVitoria(nodo.getJogador());
+
+        countColunaPontos = aplicaHeuristicas(estadosVitoria, tabuleiro[jogada.coluna], this.pesoEstadoVitoria);
+
+        if (countColunaPontos > 0) {
+            nodo.setEstadoFinal();
+            countColunaPontos = (short) (this.pesoEstadoVitoria / TabuleiroUtil.Profundidade(nodo));
+        }
+
+        return countColunaPontos;
+    }
+
+    private short verificaEstadoFinalDiagonalPrincipal(Nodo nodo) {
+        short countColunaPontos = 0;
+        short[][] tabuleiro = nodo.getArrayTabuleiro();
+        Tupla jogada = (Tupla) nodo.getJogada().getPosInicialDiagonalPrincipal().clone();
+
+        short contador = 0;
+        short[] valores = new short[11];
+
+        do {
+            valores[contador] = tabuleiro[jogada.coluna][jogada.linha];
+            jogada = jogada.proximaPosDiagonalPrincipal();
+            contador++;
+        } while (jogada != null);
+
+        List<short[]> estadosVitoria = TabPreEstadosUtil.getEstadosVitoria(nodo.getJogador());
+
+        countColunaPontos = aplicaHeuristicas(estadosVitoria, valores, this.pesoEstadoVitoria);
+
+        if (countColunaPontos > 0) {
+            nodo.setEstadoFinal();
+            countColunaPontos = (short) (this.pesoEstadoVitoria / TabuleiroUtil.Profundidade(nodo));
+        }
+
+        return countColunaPontos;
+    }
+
+    private short verificaEstadoFinalDiagonalSecundaria(Nodo nodo) {
+        short countColunaPontos = 0;
+        short[][] tabuleiro = nodo.getArrayTabuleiro();
+        Tupla jogada = (Tupla) nodo.getJogada().getPosInicialDiagonalSecundaria().clone();
+
+        short contador = 0;
+        short[] valores = new short[11];
+        do {
+            valores[contador] = tabuleiro[jogada.coluna][jogada.linha];
+            jogada = jogada.proximaPosDiagonalSecundaria();
+            contador++;
+        } while (jogada != null);
+
+        List<short[]> estadosVitoria = TabPreEstadosUtil.getEstadosVitoria(nodo.getJogador());
+
+        countColunaPontos = aplicaHeuristicas(estadosVitoria, valores, this.pesoEstadoVitoria);
+
+        if (countColunaPontos > 0) {
+            nodo.setEstadoFinal();
+            countColunaPontos = (short) (this.pesoEstadoVitoria / TabuleiroUtil.Profundidade(nodo));
+        }
+
+        return countColunaPontos;
+    }
+
+    protected short aplicaHeuristicas(List<short[]> estados, short[] tabuleiro, short peso) {
+        short countColunaPontos = 0;
+        for (short[] estado : estados) {
+            if (TabPreEstadosUtil.contains(tabuleiro, estado)) {
+                countColunaPontos += peso;
             }
         }
+        return countColunaPontos;
     }
+
 }

@@ -9,7 +9,7 @@ import com.ufpel.bokugame.base.CodigoTabuleiro;
 import com.ufpel.bokugame.base.Nodo;
 import com.ufpel.bokugame.ia.Busca;
 import com.ufpel.bokugame.ia.BuscaProfundidadeParalela;
-import com.ufpel.bokugame.ia.HeuristicaA;
+import com.ufpel.bokugame.ia.HeuristicaC;
 import com.ufpel.bokugame.util.HttpUtil;
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -20,27 +20,28 @@ import java.net.MalformedURLException;
  */
 public class Test {
 
-    public static void main(String[] args) throws MalformedURLException, IOException {
+    public static void main(String[] args) throws MalformedURLException, IOException, InterruptedException {
         Busca busca = new BuscaProfundidadeParalela();
 
-        HttpUtil httpUtil = new HttpUtil("http://192.168.0.108:8080");
+        HttpUtil httpUtil = new HttpUtil("http://192.168.0.104:8080");
 
-        for (int i = 0; i < 10; i++) {
-            System.out.println("Turno - " + i);
-            Nodo raiz = new Nodo(httpUtil.getTabuleiroAtual());
-            raiz.setJogador(CodigoTabuleiro.JOGADOR_B);
+        int codJogadorAtual = CodigoTabuleiro.JOGADOR_A;
+        while (codJogadorAtual != 0) {
 
-            Nodo resp = busca.Busca(raiz, (short) 4, CodigoTabuleiro.JOGADOR_A, new HeuristicaA());
+            codJogadorAtual = httpUtil.getCodVezJogador();
+            if (codJogadorAtual == CodigoTabuleiro.JOGADOR_A) {
+                System.out.println("Jogando...");
+                Nodo raiz = new Nodo(httpUtil.getTabuleiroAtual());
+                raiz.setJogador(CodigoTabuleiro.JOGADOR_B);
 
-            httpUtil.movePeca(CodigoTabuleiro.JOGADOR_A, resp.getJogada().coluna, resp.getJogada().linha);
+                Nodo resp = busca.Busca(raiz, (short) 3, CodigoTabuleiro.JOGADOR_A, new HeuristicaC());
 
-            //------------------------------------------------------------------------------------------------
-            raiz = new Nodo(httpUtil.getTabuleiroAtual());
-            raiz.setJogador(CodigoTabuleiro.JOGADOR_A);
+                httpUtil.movePeca(CodigoTabuleiro.JOGADOR_A, resp.getJogada().coluna, resp.getJogada().linha);
 
-            resp = busca.Busca(raiz, (short) 4, CodigoTabuleiro.JOGADOR_B, new HeuristicaA());
-
-            httpUtil.movePeca(CodigoTabuleiro.JOGADOR_B, resp.getJogada().coluna, resp.getJogada().linha);
+                System.out.println("Jogado...");
+            } else {
+                Thread.sleep(1000);
+            }
         }
 
     }
