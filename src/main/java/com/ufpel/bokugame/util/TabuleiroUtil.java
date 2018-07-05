@@ -17,6 +17,7 @@ public class TabuleiroUtil {
 
     public static List<Nodo> geraJogadas(Nodo pai, short codJogador) {
         List<Nodo> nodos = new ArrayList<>();
+        Nodo tmp = null;
 
         short[][] arrayTabuleiro = pai.getArrayTabuleiro();
         for (short i = 0; i < arrayTabuleiro.length; i++) {
@@ -32,26 +33,12 @@ public class TabuleiroUtil {
                 }
             }
         }
-        return nodos;
-    }
 
-    public static List<Nodo> geraJogadasSemPai(Nodo pai, short codJogador) {
-        List<Nodo> nodos = new ArrayList<>();
-
-        short[][] arrayTabuleiro = pai.getArrayTabuleiro();
-        for (short i = 0; i < arrayTabuleiro.length; i++) {
-            for (short j = 0; j < arrayTabuleiro[i].length; j++) {
-                int valorAtual = pai.getArrayTabuleiro()[i][j];
-                if (valorAtual == 0) {
-                    Nodo novo = (Nodo) pai.clone();
-                    novo.pai = null;
-                    novo.setJogador(codJogador);
-                    novo.setJogada(i, j, codJogador);
-
-                    nodos.add(novo);
-                }
-            }
+        for (int i = nodos.size() - 1; i >= 0; i--) {
+            nodos.get(i).irmao = tmp;
+            tmp = nodos.get(i);
         }
+
         return nodos;
     }
 

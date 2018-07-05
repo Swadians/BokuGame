@@ -23,7 +23,7 @@ public class Test {
     public static void main(String[] args) throws MalformedURLException, IOException, InterruptedException {
         Busca busca = new BuscaProfundidadeParalela();
 
-        HttpUtil httpUtil = new HttpUtil("http://192.168.0.104:8080");
+        HttpUtil httpUtil = new HttpUtil("http://192.168.0.106:8080");
 
         int codJogadorAtual = CodigoTabuleiro.JOGADOR_A;
         while (codJogadorAtual != 0) {

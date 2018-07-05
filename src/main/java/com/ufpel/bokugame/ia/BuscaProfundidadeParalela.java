@@ -6,6 +6,7 @@
 package com.ufpel.bokugame.ia;
 
 import com.ufpel.bokugame.base.Nodo;
+import com.ufpel.bokugame.util.IaUtil;
 import com.ufpel.bokugame.util.TabuleiroUtil;
 import java.util.List;
 
@@ -37,8 +38,9 @@ public class BuscaProfundidadeParalela implements Busca {
 //        for (int i = 0; i < jogadasPossiveis.size(); i++) {
 //            buscaProfundidadeIterativa.Busca(jogadasPossiveis.get(i), profundidade, codJogador, heuristica);
 //        }
+        short calcBestPleis = IaUtil.calcBestPleis(jogadasPossiveis.size());
         jogadasPossiveis.parallelStream().forEach(nodo -> {
-            buscaProfundidadeIterativa.Busca(nodo, profundidade, codJogador, heuristica);
+            buscaProfundidadeIterativa.Busca(nodo, calcBestPleis, codJogador, heuristica);
         });
         Nodo maiorHeuristica = this.getMaiorHeuristica(jogadasPossiveis);
 

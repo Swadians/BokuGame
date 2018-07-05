@@ -18,6 +18,7 @@ public class Nodo implements Cloneable, Comparable<Nodo> {
     private Tupla jogada;
     private boolean visitado;
     public Nodo pai;
+    public Nodo irmao;
 
     public Nodo() {
         this.tabuleiro = new Tabuleiro();

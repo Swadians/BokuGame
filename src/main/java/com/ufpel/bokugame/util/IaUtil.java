@@ -11,15 +11,26 @@ package com.ufpel.bokugame.util;
  */
 public class IaUtil {
 
-    private static int cargaMaximaPlies = 4;
-
     public static short calcBestPleis(int numFilhos) {
-        int numPlies = 4;
-        while (Math.pow(numPlies, numFilhos) <= Math.pow(cargaMaximaPlies, 78)) {
+        short numPlies = 3;
+
+        if (numFilhos < 50) {
             numPlies++;
+        } else if (numFilhos < 24) {
+            numPlies += 2;
+        } else if (numFilhos < 14) {
+            numPlies += 3;
+        } else if (numFilhos < 10) {
+            numPlies += 4;
+        } else if (numFilhos < 8) {
+            numPlies += 5;
+        } else if (numFilhos < 6) {
+            numPlies += 6;
+        } else if (numFilhos < 5) {
+            numPlies += 7;
         }
 
-        return (short) --numPlies;
+        return (short) numPlies;
     }
 
 }
