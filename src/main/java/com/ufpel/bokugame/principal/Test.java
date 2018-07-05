@@ -34,11 +34,17 @@ public class Test {
                 Nodo raiz = new Nodo(httpUtil.getTabuleiroAtual());
                 raiz.setJogador(CodigoTabuleiro.JOGADOR_B);
 
-                Nodo resp = busca.Busca(raiz, (short) 3, CodigoTabuleiro.JOGADOR_A, new HeuristicaC());
+                long startTime = System.currentTimeMillis();
+
+                Nodo resp = busca.Busca(raiz, (short) 4, CodigoTabuleiro.JOGADOR_A, new HeuristicaC());
 
                 httpUtil.movePeca(CodigoTabuleiro.JOGADOR_A, resp.getJogada().coluna, resp.getJogada().linha);
 
-                System.out.println("Jogado...");
+                long endTime = System.currentTimeMillis();
+
+                long duration = (endTime - startTime) / 1000;  //divide by 1000000 to get milliseconds
+
+                System.out.println("Jogado em: " + duration + "s");
             } else {
                 Thread.sleep(1000);
             }

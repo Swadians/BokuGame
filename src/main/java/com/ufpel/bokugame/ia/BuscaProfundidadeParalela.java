@@ -21,12 +21,12 @@ public class BuscaProfundidadeParalela implements Busca {
         List<Nodo> jogadasPossiveis = TabuleiroUtil.geraJogadas(base, codJogador);
         List<Nodo> jogadasPossiveisDerrotas = TabuleiroUtil.geraJogadas(base, codJogador);
 
-        for (int i = 0; i < jogadasPossiveisDerrotas.size(); i++) {
-            buscaProfundidadeIterativa.Busca(jogadasPossiveisDerrotas.get(i), (short) 1, codJogador, new HeuristicaIdentificaDerrotas());
-        }
-//        jogadasPossiveisDerrotas.parallelStream().forEach(nodo -> {
-//            buscaProfundidadeIterativa.Busca(nodo, (short) 1, codJogador, new HeuristicaIdentificaDerrotas());
-//        });
+//        for (int i = 0; i < jogadasPossiveisDerrotas.size(); i++) {
+//            buscaProfundidadeIterativa.Busca(jogadasPossiveisDerrotas.get(i), (short) 1, codJogador, new HeuristicaIdentificaDerrotas());
+//        }
+        jogadasPossiveisDerrotas.parallelStream().forEach(nodo -> {
+            buscaProfundidadeIterativa.Busca(nodo, (short) 1, codJogador, new HeuristicaIdentificaDerrotas());
+        });
 
         Nodo possivelImpedimentoDerrota = this.getMaiorHeuristica(jogadasPossiveisDerrotas);
         if (possivelImpedimentoDerrota.getValorHeuristico() > 0) {
@@ -34,12 +34,12 @@ public class BuscaProfundidadeParalela implements Busca {
         }
         jogadasPossiveisDerrotas = null;
 
-        for (int i = 0; i < jogadasPossiveis.size(); i++) {
-            buscaProfundidadeIterativa.Busca(jogadasPossiveis.get(i), profundidade, codJogador, heuristica);
-        }
-//        jogadasPossiveis.parallelStream().forEach(nodo -> {
-//            buscaProfundidadeIterativa.Busca(nodo, profundidade, codJogador, heuristica);
-//        });
+//        for (int i = 0; i < jogadasPossiveis.size(); i++) {
+//            buscaProfundidadeIterativa.Busca(jogadasPossiveis.get(i), profundidade, codJogador, heuristica);
+//        }
+        jogadasPossiveis.parallelStream().forEach(nodo -> {
+            buscaProfundidadeIterativa.Busca(nodo, profundidade, codJogador, heuristica);
+        });
         Nodo maiorHeuristica = this.getMaiorHeuristica(jogadasPossiveis);
 
         return maiorHeuristica;
