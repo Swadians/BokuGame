@@ -36,7 +36,7 @@ public class Test {
 
                 long startTime = System.currentTimeMillis();
 
-                Nodo resp = busca.Busca(raiz, (short) 4, CodigoTabuleiro.JOGADOR_A, new HeuristicaC());
+                Nodo resp = busca.Busca(raiz, (short) 3, CodigoTabuleiro.JOGADOR_A, new HeuristicaC());
 
                 httpUtil.movePeca(CodigoTabuleiro.JOGADOR_A, resp.getJogada().coluna, resp.getJogada().linha);
 

@@ -20,16 +20,24 @@ public class TabPreEstadosUtil {
 
         short adiversario = TrocaJogador(codJogador);
 
+        lista.add(new short[]{adiversario, adiversario, adiversario, codJogador, CodigoTabuleiro.VAZIO});
+        lista.add(new short[]{adiversario, adiversario, codJogador, adiversario, CodigoTabuleiro.VAZIO});
+        lista.add(new short[]{adiversario, codJogador, adiversario, adiversario, CodigoTabuleiro.VAZIO});
+        lista.add(new short[]{codJogador, adiversario, adiversario, adiversario, CodigoTabuleiro.VAZIO});
+
+        return lista;
+    }
+
+    public static List<short[]> getEstadoCancelaDerrotasPrioritarios(short codJogador) {
+        List<short[]> lista = new ArrayList<>();
+
+        short adiversario = TrocaJogador(codJogador);
+
         lista.add(new short[]{codJogador, adiversario, adiversario, adiversario, adiversario});
         lista.add(new short[]{adiversario, codJogador, adiversario, adiversario, adiversario});
         lista.add(new short[]{adiversario, adiversario, codJogador, adiversario, adiversario});
         lista.add(new short[]{adiversario, adiversario, adiversario, codJogador, adiversario});
         lista.add(new short[]{adiversario, adiversario, adiversario, adiversario, codJogador});
-
-        lista.add(new short[]{adiversario, adiversario, adiversario, codJogador, CodigoTabuleiro.VAZIO});
-        lista.add(new short[]{adiversario, adiversario, codJogador, adiversario, CodigoTabuleiro.VAZIO});
-        lista.add(new short[]{adiversario, codJogador, adiversario, adiversario, CodigoTabuleiro.VAZIO});
-        lista.add(new short[]{codJogador, adiversario, adiversario, adiversario, CodigoTabuleiro.VAZIO});
 
         return lista;
     }
