@@ -22,9 +22,6 @@ public class BuscaProfundidadeParalela implements Busca {
         List<Nodo> jogadasPossiveis = TabuleiroUtil.geraJogadas(base, codJogador);
         List<Nodo> jogadasPossiveisDerrotas = TabuleiroUtil.geraJogadas(base, codJogador);
 
-//        for (int i = 0; i < jogadasPossiveisDerrotas.size(); i++) {
-//            buscaProfundidadeIterativa.Busca(jogadasPossiveisDerrotas.get(i), (short) 1, codJogador, new HeuristicaIdentificaDerrotas());
-//        }
         jogadasPossiveisDerrotas.parallelStream().forEach(nodo -> {
             buscaProfundidadeIterativa.Busca(nodo, (short) 1, codJogador, new HeuristicaIdentificaDerrotas());
         });
@@ -35,9 +32,6 @@ public class BuscaProfundidadeParalela implements Busca {
         }
         jogadasPossiveisDerrotas = null;
 
-//        for (int i = 0; i < jogadasPossiveis.size(); i++) {
-//            buscaProfundidadeIterativa.Busca(jogadasPossiveis.get(i), profundidade, codJogador, heuristica);
-//        }
         short calcBestPleis = IaUtil.calcBestPleis(jogadasPossiveis.size());
         jogadasPossiveis.parallelStream().forEach(nodo -> {
             buscaProfundidadeIterativa.Busca(nodo, calcBestPleis, codJogador, heuristica);

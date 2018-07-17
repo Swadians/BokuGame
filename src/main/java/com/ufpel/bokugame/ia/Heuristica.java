@@ -117,6 +117,7 @@ public abstract class Heuristica {
         for (short[] estado : estados) {
             if (TabPreEstadosUtil.contains(tabuleiro, estado)) {
                 countColunaPontos += peso;
+                // return peso;
             }
         }
         return countColunaPontos;

@@ -20,7 +20,6 @@ public class BuscaMinMax implements Busca {
     public Nodo Busca(Nodo base, short profundidade, short codJogador, Heuristica heuristica) {
         Stack<Nodo> pilhaDeNodos = new Stack<>();
 
-        //    boolean profundidadePar = (profundidade % 2) == 0;
         pilhaDeNodos.add(base);
 
         while (!pilhaDeNodos.empty()) {

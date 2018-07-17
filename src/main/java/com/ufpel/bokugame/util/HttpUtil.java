@@ -190,4 +190,8 @@ public class HttpUtil {
         }
     }
 
+    public boolean jogadaSanduiche() {
+        return this.getMovimentosPossiveis().size() == 2;
+    }
+
 }

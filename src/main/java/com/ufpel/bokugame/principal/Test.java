@@ -7,12 +7,14 @@ package com.ufpel.bokugame.principal;
 
 import com.ufpel.bokugame.base.CodigoTabuleiro;
 import com.ufpel.bokugame.base.Nodo;
+import com.ufpel.bokugame.base.Tupla;
 import com.ufpel.bokugame.ia.Busca;
 import com.ufpel.bokugame.ia.BuscaProfundidadeParalela;
 import com.ufpel.bokugame.ia.HeuristicaC;
 import com.ufpel.bokugame.util.HttpUtil;
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.util.List;
 
 /**
  *
@@ -27,24 +29,38 @@ public class Test {
 
         int codJogadorAtual = CodigoTabuleiro.JOGADOR_A;
         while (codJogadorAtual != 0) {
-
             codJogadorAtual = httpUtil.getCodVezJogador();
             if (codJogadorAtual == CodigoTabuleiro.JOGADOR_A) {
                 System.out.println("Jogando...");
-                Nodo raiz = new Nodo(httpUtil.getTabuleiroAtual());
-                raiz.setJogador(CodigoTabuleiro.JOGADOR_B);
 
-                long startTime = System.currentTimeMillis();
+                if (httpUtil.jogadaSanduiche()) {
+                    long startTime = System.currentTimeMillis();
 
-                Nodo resp = busca.Busca(raiz, (short) 3, CodigoTabuleiro.JOGADOR_A, new HeuristicaC());
+                    List<Tupla> movimentosPossiveis = httpUtil.getMovimentosPossiveis();
+                    httpUtil.movePeca(CodigoTabuleiro.JOGADOR_A, movimentosPossiveis.get(0).coluna, movimentosPossiveis.get(0).linha);
 
-                httpUtil.movePeca(CodigoTabuleiro.JOGADOR_A, resp.getJogada().coluna, resp.getJogada().linha);
+                    long endTime = System.currentTimeMillis();
 
-                long endTime = System.currentTimeMillis();
+                    long duration = (endTime - startTime) / 1000;
 
-                long duration = (endTime - startTime) / 1000;  //divide by 1000000 to get milliseconds
+                    System.out.println("Jogado em: " + duration + "s");
+                } else {
+                    Nodo raiz = new Nodo(httpUtil.getTabuleiroAtual());
+                    raiz.setJogador(CodigoTabuleiro.JOGADOR_B);
 
-                System.out.println("Jogado em: " + duration + "s");
+                    long startTime = System.currentTimeMillis();
+
+                    Nodo resp = busca.Busca(raiz, (short) 3, CodigoTabuleiro.JOGADOR_A, new HeuristicaC());
+
+                    httpUtil.movePeca(CodigoTabuleiro.JOGADOR_A, resp.getJogada().coluna, resp.getJogada().linha);
+
+                    long endTime = System.currentTimeMillis();
+
+                    long duration = (endTime - startTime) / 1000;
+
+                    System.out.println("Jogado em: " + duration + "s");
+                }
+
             } else {
                 Thread.sleep(1000);
             }
