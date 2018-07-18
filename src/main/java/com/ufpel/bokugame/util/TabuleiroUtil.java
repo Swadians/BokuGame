@@ -5,6 +5,7 @@
  */
 package com.ufpel.bokugame.util;
 
+import com.ufpel.bokugame.base.CodigoTabuleiro;
 import com.ufpel.bokugame.base.Nodo;
 import java.util.ArrayList;
 import java.util.List;
@@ -52,4 +53,10 @@ public class TabuleiroUtil {
         return count;
     }
 
+    public static short trocaJogador(short codJogatorAtual) {
+        short tmp = (codJogatorAtual == CodigoTabuleiro.JOGADOR_A)
+                ? CodigoTabuleiro.JOGADOR_B
+                : CodigoTabuleiro.JOGADOR_A;
+        return tmp;
+    }
 }
