@@ -14,7 +14,7 @@ import java.util.List;
  *
  * @author WeslenSchiavon
  */
-public class HeuristicaC extends Heuristica {
+public class HeuristicaBuscaPontos extends Heuristica {
 
     @Override
     public void calcAndSet(Nodo nodo) {

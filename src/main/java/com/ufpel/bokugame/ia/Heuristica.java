@@ -21,6 +21,7 @@ public abstract class Heuristica {
     protected final short pesoEstadoRegular = 5;
     protected final short pesoEstadoBom = 15;
     protected final short pesoEstadoOtimo = 50;
+    protected final short pesoEstadoSanduicheOtimo = 50;
     protected final short pesoCancelDerrota = 300;
     protected final short pesoCancelDerrotaPrioritarias = 600;
     protected final short pesoEstadoVitoria = Short.MAX_VALUE;
@@ -121,6 +122,19 @@ public abstract class Heuristica {
             }
         }
         return countColunaPontos;
+    }
+
+    protected short aplicaHeuristicasSanduiche(List<short[]> tiposSauiche, List<short[]> estados, short[] tabuleiro, short peso, short posJogada) {
+        for (short[] sanduiche : tiposSauiche) {
+            if (TabPreEstadosUtil.contains(tabuleiro, sanduiche, posJogada)) {
+                for (short[] estado : estados) {
+                    if (TabPreEstadosUtil.contains(tabuleiro, estado, posJogada)) {
+                        return peso;
+                    }
+                }
+            }
+        }
+        return 0;
     }
 
 }

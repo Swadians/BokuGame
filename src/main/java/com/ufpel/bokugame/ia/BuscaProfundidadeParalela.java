@@ -23,7 +23,7 @@ public class BuscaProfundidadeParalela implements Busca {
         List<Nodo> jogadasPossiveisDerrotas = TabuleiroUtil.geraJogadas(base, codJogador);
 
         jogadasPossiveisDerrotas.parallelStream().forEach(nodo -> {
-            buscaProfundidadeIterativa.Busca(nodo, (short) 1, codJogador, new HeuristicaIdentificaDerrotas());
+            buscaProfundidadeIterativa.Busca(nodo, (short) 1, codJogador, new HeuristicaIdentificaJogadasPrioritarias());
         });
 
         Nodo possivelImpedimentoDerrota = this.getMaiorHeuristica(jogadasPossiveisDerrotas);

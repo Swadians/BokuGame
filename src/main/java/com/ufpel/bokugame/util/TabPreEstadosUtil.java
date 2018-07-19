@@ -18,7 +18,7 @@ public class TabPreEstadosUtil {
     public static List<short[]> getEstadoCancelaDerrotas(short codJogador) {
         List<short[]> lista = new ArrayList<>();
 
-        short adiversario = TrocaJogador(codJogador);
+        short adiversario = TabuleiroUtil.trocaJogador(codJogador);
 
         lista.add(new short[]{adiversario, adiversario, adiversario, codJogador, CodigoTabuleiro.VAZIO});
         lista.add(new short[]{adiversario, adiversario, codJogador, adiversario, CodigoTabuleiro.VAZIO});
@@ -31,7 +31,7 @@ public class TabPreEstadosUtil {
     public static List<short[]> getEstadoCancelaDerrotasPrioritarios(short codJogador) {
         List<short[]> lista = new ArrayList<>();
 
-        short adiversario = TrocaJogador(codJogador);
+        short adiversario = TabuleiroUtil.trocaJogador(codJogador);
 
         lista.add(new short[]{codJogador, adiversario, adiversario, adiversario, adiversario});
         lista.add(new short[]{adiversario, codJogador, adiversario, adiversario, adiversario});
@@ -100,11 +100,29 @@ public class TabPreEstadosUtil {
         return lista;
     }
 
-    private static short TrocaJogador(short codJogatorAtual) {
-        short tmp = (codJogatorAtual == CodigoTabuleiro.JOGADOR_A)
-                ? CodigoTabuleiro.JOGADOR_B
-                : CodigoTabuleiro.JOGADOR_A;
-        return tmp;
+    public static List<short[]> getEstadosSanduiches(short codJogador) {
+        List<short[]> lista = new ArrayList<>();
+
+        short adiversario = TabuleiroUtil.trocaJogador(codJogador);
+
+        // lista.add(new short[]{codJogador, adiversario, codJogador});
+        lista.add(new short[]{codJogador, adiversario, adiversario, codJogador});
+
+        return lista;
+    }
+
+    public static List<short[]> getEstadosSanduichesOtimos(short codJogador) {
+        List<short[]> lista = new ArrayList<>();
+
+        short adiversario = TabuleiroUtil.trocaJogador(codJogador);
+
+//        lista.add(new short[]{codJogador, adiversario, codJogador, codJogador, codJogador});
+//        lista.add(new short[]{codJogador, codJogador, adiversario, codJogador, codJogador});
+//        lista.add(new short[]{codJogador, codJogador, codJogador, adiversario, codJogador});
+        lista.add(new short[]{codJogador, adiversario, adiversario, codJogador, codJogador, codJogador, codJogador});
+        lista.add(new short[]{codJogador, codJogador, codJogador, codJogador, adiversario, adiversario, codJogador});
+
+        return lista;
     }
 
     public static boolean contains(final short[] array, final short[] target) {
@@ -143,6 +161,33 @@ public class TabPreEstadosUtil {
             } else {
                 return false;
             }
+
+        }
+        return false;
+    }
+
+    public static boolean contains(final short[] array, final short[] target, short... posNecessaria) {
+        // check that arrays are not null omitted
+        if (target.length == 0) {
+            return true;
+        }
+
+        outer:
+        for (short i = 0; i < array.length - target.length + 1; i++) {
+            for (short j = 0; j < target.length; j++) {
+                if (array[i + j] != target[j]) {
+                    continue outer;
+                }
+            }
+            short posMaxima = (short) (i + target.length - 1);
+
+            for (int j = 0; j < posNecessaria.length; j++) {
+                if ((posNecessaria[j] >= i) && (posNecessaria[j] <= posMaxima)) {
+                    return true;
+                }
+            }
+
+            return false;
 
         }
         return false;

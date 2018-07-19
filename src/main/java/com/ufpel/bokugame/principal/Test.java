@@ -9,7 +9,7 @@ import com.ufpel.bokugame.base.Nodo;
 import com.ufpel.bokugame.base.Tupla;
 import com.ufpel.bokugame.ia.Busca;
 import com.ufpel.bokugame.ia.BuscaProfundidadeParalela;
-import com.ufpel.bokugame.ia.HeuristicaC;
+import com.ufpel.bokugame.ia.HeuristicaBuscaPontos;
 import com.ufpel.bokugame.util.HttpUtil;
 import com.ufpel.bokugame.util.TabuleiroUtil;
 import java.io.IOException;
@@ -52,7 +52,7 @@ public class Test {
 
                     long startTime = System.currentTimeMillis();
 
-                    Nodo resp = busca.Busca(raiz, (short) 3, jogador, new HeuristicaC());
+                    Nodo resp = busca.Busca(raiz, (short) 3, jogador, new HeuristicaBuscaPontos());
 
                     httpUtil.movePeca(jogador, resp.getJogada().coluna, resp.getJogada().linha);
 
