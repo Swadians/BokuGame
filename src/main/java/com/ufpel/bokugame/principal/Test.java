@@ -10,11 +10,11 @@ import com.ufpel.bokugame.base.Tupla;
 import com.ufpel.bokugame.ia.Busca;
 import com.ufpel.bokugame.ia.BuscaProfundidadeParalela;
 import com.ufpel.bokugame.ia.HeuristicaBuscaPontos;
+import com.ufpel.bokugame.ia.HeuristicaEscolhePosSanduiche;
 import com.ufpel.bokugame.util.HttpUtil;
 import com.ufpel.bokugame.util.TabuleiroUtil;
 import java.io.IOException;
 import java.net.MalformedURLException;
-import java.util.List;
 
 /**
  *
@@ -37,9 +37,12 @@ public class Test {
 
                 if (httpUtil.jogadaSanduiche()) {
                     long startTime = System.currentTimeMillis();
+                    HeuristicaEscolhePosSanduiche escolheJogada = new HeuristicaEscolhePosSanduiche();
+                    Nodo raiz = new Nodo(httpUtil.getTabuleiroAtual());
+                    raiz.setJogador(jogador);
 
-                    List<Tupla> movimentosPossiveis = httpUtil.getMovimentosPossiveis();
-                    httpUtil.movePeca(jogador, movimentosPossiveis.get(0).coluna, movimentosPossiveis.get(0).linha);
+                    Tupla melhorJogada = escolheJogada.getMelhorJogada(raiz, httpUtil.getMovimentosPossiveis());
+                    httpUtil.movePeca(jogador, melhorJogada.coluna, melhorJogada.linha);
 
                     long endTime = System.currentTimeMillis();
 

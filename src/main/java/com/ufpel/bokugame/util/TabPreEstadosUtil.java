@@ -125,6 +125,17 @@ public class TabPreEstadosUtil {
         return lista;
     }
 
+    public static List<short[]> getEstadosSanduichesParaEscolha(short codJogador) {
+        List<short[]> lista = new ArrayList<>();
+
+        short adiversario = TabuleiroUtil.trocaJogador(codJogador);
+
+        lista.add(new short[]{adiversario, codJogador, codJogador, codJogador, codJogador});
+        lista.add(new short[]{codJogador, codJogador, codJogador, codJogador, adiversario});
+
+        return lista;
+    }
+
     public static boolean contains(final short[] array, final short[] target) {
         // check that arrays are not null omitted
         if (target.length == 0) {
