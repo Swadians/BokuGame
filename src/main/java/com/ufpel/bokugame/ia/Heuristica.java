@@ -20,10 +20,11 @@ public abstract class Heuristica {
     protected final short pesoEstadoNormal = 1;
     protected final short pesoEstadoRegular = 5;
     protected final short pesoEstadoBom = 15;
-    protected final short pesoEstadoOtimo = 50;
+    protected final short pesoEstadoOtimo = 100;
     protected final short pesoEstadoSanduicheOtimo = 50;
-    protected final short pesoCancelDerrota = 300;
-    protected final short pesoCancelDerrotaPrioritarias = 600;
+    protected final short pesoCD = 10;
+    protected final short pesoCDMediaPrioridade = 40;
+    protected final short pesoCDAltaPrioridade = 100;
     protected final short pesoEstadoVitoria = Short.MAX_VALUE;
 
     public abstract void calcAndSet(Nodo nodo);

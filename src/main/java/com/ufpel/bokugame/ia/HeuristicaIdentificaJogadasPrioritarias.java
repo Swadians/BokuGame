@@ -18,37 +18,45 @@ public class HeuristicaIdentificaJogadasPrioritarias extends Heuristica {
 
     @Override
     public void calcAndSet(Nodo nodo) {
-        short verificaInpedimentoDerrotaColuna = this.verificaInpedimentoDerrotaColuna(nodo);
-        short verificaInpedimentoDerrotaDiagonalPrincipal = this.verificaInpedimentoDerrotaDiagonalPrincipal(nodo);
-        short verificaInpedimentoDerrotaDiagonalSecundaria = this.verificaInpedimentoDerrotaDiagonalSecundaria(nodo);
+        short verificaJogadaPrioritariaColuna = this.verificaJogadaPrioritariaColuna(nodo);
+        short verificaJogadaPrioritariaDiagonalPrincipal = this.verificaJogadaPrioritariaDiagonalPrincipal(nodo);
+        short verificaJogadaPrioritariaSecundaria = this.verificaJogadaPrioritariaDiagonalSecundaria(nodo);
 
-        short valorTotal = (short) (verificaInpedimentoDerrotaColuna
-                + verificaInpedimentoDerrotaDiagonalSecundaria
-                + verificaInpedimentoDerrotaDiagonalPrincipal);
+        short valorTotal = (short) (verificaJogadaPrioritariaColuna
+                + verificaJogadaPrioritariaSecundaria
+                + verificaJogadaPrioritariaDiagonalPrincipal);
 
         nodo.setValorHeuristico(valorTotal);
 
     }
 
-    public short verificaInpedimentoDerrotaColuna(Nodo nodo) {
+    public short verificaJogadaPrioritariaColuna(Nodo nodo) {
         short[][] tabuleiro = nodo.getArrayTabuleiro();
         short somador = 0;
         Tupla jogada = nodo.getJogada();
 
         List<short[]> derrotas = TabPreEstadosUtil.getEstadoCancelaDerrotas(nodo.getJogador());
-        List<short[]> derrotasPrioritarias = TabPreEstadosUtil.getEstadoCancelaDerrotasPrioritarios(nodo.getJogador());
+        List<short[]> derrotasMediaPrioridade = TabPreEstadosUtil.getEstadoCancelaDerrotasMediaPrioridade(nodo.getJogador());
+        List<short[]> derrotasAltaPrioridade = TabPreEstadosUtil.getEstadoCancelaDerrotasAltaPrioridade(nodo.getJogador());
         List<short[]> estadosSanduiches = TabPreEstadosUtil.getEstadosSanduiches(nodo.getJogador());
         List<short[]> estadosSanduichesOtimos = TabPreEstadosUtil.getEstadosSanduichesOtimos(nodo.getJogador());
         List<short[]> estadosVitoria = TabPreEstadosUtil.getEstadosVitoria(nodo.getJogador());
 
         for (short[] derrota : derrotas) {
             if (TabPreEstadosUtil.contains(tabuleiro[jogada.coluna], derrota, nodo.getJogada().linha)) {
-                somador += this.pesoCancelDerrota;
+                somador += this.pesoCD;
             }
         }
-        for (short[] derrota : derrotasPrioritarias) {
+
+        for (short[] derrota : derrotasMediaPrioridade) {
             if (TabPreEstadosUtil.contains(tabuleiro[jogada.coluna], derrota, nodo.getJogada().linha)) {
-                somador += this.pesoCancelDerrotaPrioritarias;
+                somador += this.pesoCDMediaPrioridade;
+            }
+        }
+
+        for (short[] derrota : derrotasAltaPrioridade) {
+            if (TabPreEstadosUtil.contains(tabuleiro[jogada.coluna], derrota, nodo.getJogada().linha)) {
+                somador += this.pesoCDAltaPrioridade;
             }
         }
 
@@ -58,13 +66,14 @@ public class HeuristicaIdentificaJogadasPrioritarias extends Heuristica {
         return somador;
     }
 
-    public short verificaInpedimentoDerrotaDiagonalPrincipal(Nodo nodo) {
+    public short verificaJogadaPrioritariaDiagonalPrincipal(Nodo nodo) {
         short[][] tabuleiro = nodo.getArrayTabuleiro();
         short somador = 0;
         Tupla jogada = nodo.getJogada().getPosInicialDiagonalPrincipal();
 
         List<short[]> derrotas = TabPreEstadosUtil.getEstadoCancelaDerrotas(nodo.getJogador());
-        List<short[]> derrotasPrioritaria = TabPreEstadosUtil.getEstadoCancelaDerrotasPrioritarios(nodo.getJogador());
+        List<short[]> derrotasMediaPrioridade = TabPreEstadosUtil.getEstadoCancelaDerrotasMediaPrioridade(nodo.getJogador());
+        List<short[]> derrotasAltaPrioridade = TabPreEstadosUtil.getEstadoCancelaDerrotasAltaPrioridade(nodo.getJogador());
         List<short[]> estadosSanduiches = TabPreEstadosUtil.getEstadosSanduiches(nodo.getJogador());
         List<short[]> estadosSanduichesOtimos = TabPreEstadosUtil.getEstadosSanduichesOtimos(nodo.getJogador());
         List<short[]> estadosVitoria = TabPreEstadosUtil.getEstadosVitoria(nodo.getJogador());
@@ -85,12 +94,17 @@ public class HeuristicaIdentificaJogadasPrioritarias extends Heuristica {
 
         for (short[] derrota : derrotas) {
             if (TabPreEstadosUtil.contains(sequencia, derrota, pos)) {
-                somador += this.pesoCancelDerrota;
+                somador += this.pesoCD;
             }
         }
-        for (short[] derrota : derrotasPrioritaria) {
+        for (short[] derrota : derrotasMediaPrioridade) {
             if (TabPreEstadosUtil.contains(sequencia, derrota, pos)) {
-                somador += this.pesoCancelDerrotaPrioritarias;
+                somador += this.pesoCDMediaPrioridade;
+            }
+        }
+        for (short[] derrota : derrotasAltaPrioridade) {
+            if (TabPreEstadosUtil.contains(sequencia, derrota, pos)) {
+                somador += this.pesoCDAltaPrioridade;
             }
         }
 
@@ -100,13 +114,14 @@ public class HeuristicaIdentificaJogadasPrioritarias extends Heuristica {
         return somador;
     }
 
-    public short verificaInpedimentoDerrotaDiagonalSecundaria(Nodo nodo) {
+    public short verificaJogadaPrioritariaDiagonalSecundaria(Nodo nodo) {
         short somador = 0;
         short[][] tabuleiro = nodo.getArrayTabuleiro();
         Tupla jogada = nodo.getJogada().getPosInicialDiagonalSecundaria();
 
         List<short[]> derrotas = TabPreEstadosUtil.getEstadoCancelaDerrotas(nodo.getJogador());
-        List<short[]> derrotasPrioritarias = TabPreEstadosUtil.getEstadoCancelaDerrotasPrioritarios(nodo.getJogador());
+        List<short[]> derrotasMediaPrioridade = TabPreEstadosUtil.getEstadoCancelaDerrotasMediaPrioridade(nodo.getJogador());
+        List<short[]> derrotasAltaPrioridade = TabPreEstadosUtil.getEstadoCancelaDerrotasAltaPrioridade(nodo.getJogador());
         List<short[]> estadosSanduiches = TabPreEstadosUtil.getEstadosSanduiches(nodo.getJogador());
         List<short[]> estadosSanduichesOtimos = TabPreEstadosUtil.getEstadosSanduichesOtimos(nodo.getJogador());
         List<short[]> estadosVitoria = TabPreEstadosUtil.getEstadosVitoria(nodo.getJogador());
@@ -127,12 +142,17 @@ public class HeuristicaIdentificaJogadasPrioritarias extends Heuristica {
 
         for (short[] derrota : derrotas) {
             if (TabPreEstadosUtil.contains(sequencia, derrota, pos)) {
-                somador += this.pesoCancelDerrota;
+                somador += this.pesoCD;
             }
         }
-        for (short[] derrota : derrotasPrioritarias) {
+        for (short[] derrota : derrotasMediaPrioridade) {
             if (TabPreEstadosUtil.contains(sequencia, derrota, pos)) {
-                somador += this.pesoCancelDerrotaPrioritarias;
+                somador += this.pesoCDMediaPrioridade;
+            }
+        }
+        for (short[] derrota : derrotasAltaPrioridade) {
+            if (TabPreEstadosUtil.contains(sequencia, derrota, pos)) {
+                somador += this.pesoCDAltaPrioridade;
             }
         }
 

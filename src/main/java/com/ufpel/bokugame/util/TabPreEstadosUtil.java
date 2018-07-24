@@ -28,7 +28,20 @@ public class TabPreEstadosUtil {
         return lista;
     }
 
-    public static List<short[]> getEstadoCancelaDerrotasPrioritarios(short codJogador) {
+    public static List<short[]> getEstadoCancelaDerrotasMediaPrioridade(short codJogador) {
+        List<short[]> lista = new ArrayList<>();
+
+        short adiversario = TabuleiroUtil.trocaJogador(codJogador);
+
+        lista.add(new short[]{CodigoTabuleiro.VAZIO, adiversario, adiversario, adiversario, codJogador});
+        lista.add(new short[]{CodigoTabuleiro.VAZIO, adiversario, adiversario, codJogador, adiversario, CodigoTabuleiro.VAZIO});
+        lista.add(new short[]{CodigoTabuleiro.VAZIO, adiversario, codJogador, adiversario, adiversario, CodigoTabuleiro.VAZIO});
+        lista.add(new short[]{CodigoTabuleiro.VAZIO, codJogador, adiversario, adiversario, adiversario, CodigoTabuleiro.VAZIO});
+
+        return lista;
+    }
+
+    public static List<short[]> getEstadoCancelaDerrotasAltaPrioridade(short codJogador) {
         List<short[]> lista = new ArrayList<>();
 
         short adiversario = TabuleiroUtil.trocaJogador(codJogador);

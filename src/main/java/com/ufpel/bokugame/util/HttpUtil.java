@@ -167,7 +167,8 @@ public class HttpUtil {
 
             Scanner sc = new Scanner(new InputStreamReader(connection.getInputStream()));
 
-            return !sc.nextLine().contains("-1");
+            String response = sc.nextLine();
+            return response.contains("1") || response.contains("2");
 
         } catch (IOException e) {
             System.out.println(e);

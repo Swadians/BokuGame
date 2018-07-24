@@ -15,6 +15,8 @@ import com.ufpel.bokugame.util.HttpUtil;
 import com.ufpel.bokugame.util.TabuleiroUtil;
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.util.List;
+import java.util.Random;
 
 /**
  *
@@ -57,7 +59,16 @@ public class Test {
 
                     Nodo resp = busca.Busca(raiz, (short) 3, jogador, new HeuristicaBuscaPontos());
 
-                    httpUtil.movePeca(jogador, resp.getJogada().coluna, resp.getJogada().linha);
+                    if (!httpUtil.movePeca(jogador, resp.getJogada().coluna, resp.getJogada().linha)) {
+                        System.out.println("Jogada invalida!");
+                        System.out.println("Jogadando Aleatorio...");
+
+                        Random rd = new Random();
+                        List<Tupla> movimentosPossiveis = httpUtil.getMovimentosPossiveis();
+
+                        Tupla jogadaEscolhida = movimentosPossiveis.get(rd.nextInt(movimentosPossiveis.size()));
+                        httpUtil.movePeca(jogador, jogadaEscolhida.coluna, jogadaEscolhida.linha);
+                    }
 
                     long endTime = System.currentTimeMillis();
 
