@@ -60,18 +60,19 @@ public class HeuristicaEscolhePosSanduiche {
 
         short[] sequencia = new short[11];
         for (Tupla jogada : jogadasPossiveis) {
+            Tupla proxima = jogada;
             short contador = 0;
             short pos = 0;
             do {
-                sequencia[contador] = tabuleiro[jogada.coluna][jogada.linha];
+                sequencia[contador] = tabuleiro[proxima.coluna][proxima.linha];
 
-                if (nodo.getJogada().equals(jogada)) {
+                if (nodo.getJogada().equals(proxima)) {
                     pos = contador;
                 }
 
                 contador++;
-                jogada = jogada.proximaPosDiagonalPrincipal();
-            } while (jogada != null);
+                proxima = proxima.proximaPosDiagonalPrincipal();
+            } while (proxima != null);
 
             for (short[] sanduiche : sanduiches) {
                 if (TabPreEstadosUtil.contains(sequencia, sanduiche, pos)) {
@@ -90,18 +91,19 @@ public class HeuristicaEscolhePosSanduiche {
 
         short[] sequencia = new short[11];
         for (Tupla jogada : jogadasPossiveis) {
+            Tupla proxima = jogada;
             short contador = 0;
             short pos = 0;
             do {
-                sequencia[contador] = tabuleiro[jogada.coluna][jogada.linha];
+                sequencia[contador] = tabuleiro[proxima.coluna][proxima.linha];
 
-                if (nodo.getJogada().equals(jogada)) {
+                if (nodo.getJogada().equals(proxima)) {
                     pos = contador;
                 }
 
                 contador++;
-                jogada = jogada.proximaPosDiagonalSecundaria();
-            } while (jogada != null);
+                proxima = proxima.proximaPosDiagonalSecundaria();
+            } while (proxima != null);
 
             for (short[] sanduiche : sanduiches) {
                 if (TabPreEstadosUtil.contains(sequencia, sanduiche, pos)) {

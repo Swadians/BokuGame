@@ -22,7 +22,6 @@ public abstract class Heuristica {
     protected final short pesoEstadoBom = 15;
     protected final short pesoEstadoOtimo = 60;
     protected final short pesoEstadoSanduicheOtimo = 50;
-    protected final short pesoCD = 20;
     protected final short pesoCDBaixaPrioridade = 1;
     protected final short pesoCDMediaPrioridade = 30;
     protected final short pesoCDAltaPrioridade = 100;

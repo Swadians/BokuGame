@@ -78,7 +78,7 @@ public class Test {
                 }
 
             } else {
-                Thread.sleep(100);
+                Thread.sleep(4000);
             }
         }
 

@@ -20,8 +20,9 @@ public class TabPreEstadosUtil {
 
         short adiversario = TabuleiroUtil.trocaJogador(codJogador);
 
-        lista.add(new short[]{adiversario, adiversario, codJogador, CodigoTabuleiro.VAZIO, CodigoTabuleiro.VAZIO});
-        lista.add(new short[]{CodigoTabuleiro.VAZIO, CodigoTabuleiro.VAZIO, adiversario, adiversario, codJogador});
+        lista.add(new short[]{CodigoTabuleiro.VAZIO, adiversario, adiversario, codJogador, CodigoTabuleiro.VAZIO});
+        lista.add(new short[]{CodigoTabuleiro.VAZIO, adiversario, adiversario, codJogador, CodigoTabuleiro.VAZIO});
+        lista.add(new short[]{CodigoTabuleiro.VAZIO, adiversario, codJogador, adiversario, CodigoTabuleiro.VAZIO});
 
         return lista;
     }
@@ -123,7 +124,6 @@ public class TabPreEstadosUtil {
 
         short adiversario = TabuleiroUtil.trocaJogador(codJogador);
 
-        // lista.add(new short[]{codJogador, adiversario, codJogador});
         lista.add(new short[]{codJogador, adiversario, adiversario, codJogador});
 
         return lista;
@@ -134,11 +134,24 @@ public class TabPreEstadosUtil {
 
         short adiversario = TabuleiroUtil.trocaJogador(codJogador);
 
-//        lista.add(new short[]{codJogador, adiversario, codJogador, codJogador, codJogador});
-//        lista.add(new short[]{codJogador, codJogador, adiversario, codJogador, codJogador});
-//        lista.add(new short[]{codJogador, codJogador, codJogador, adiversario, codJogador});
         lista.add(new short[]{codJogador, adiversario, adiversario, codJogador, codJogador, codJogador, codJogador});
         lista.add(new short[]{codJogador, codJogador, codJogador, codJogador, adiversario, adiversario, codJogador});
+
+        return lista;
+    }
+
+    public static List<short[]> getEstadosSanduichesBons(short codJogador) {
+        List<short[]> lista = new ArrayList<>();
+
+        short adiversario = TabuleiroUtil.trocaJogador(codJogador);
+
+        lista.add(new short[]{codJogador, adiversario, adiversario, codJogador, codJogador, CodigoTabuleiro.VAZIO, CodigoTabuleiro.VAZIO});
+        lista.add(new short[]{codJogador, adiversario, adiversario, codJogador, codJogador, CodigoTabuleiro.VAZIO, codJogador});
+        lista.add(new short[]{codJogador, adiversario, adiversario, codJogador, codJogador, codJogador, CodigoTabuleiro.VAZIO});
+
+        lista.add(new short[]{CodigoTabuleiro.VAZIO, CodigoTabuleiro.VAZIO, codJogador, codJogador, adiversario, adiversario, codJogador});
+        lista.add(new short[]{codJogador, CodigoTabuleiro.VAZIO, codJogador, codJogador, adiversario, adiversario, codJogador});
+        lista.add(new short[]{CodigoTabuleiro.VAZIO, codJogador, codJogador, codJogador, adiversario, adiversario, codJogador});
 
         return lista;
     }
@@ -150,6 +163,14 @@ public class TabPreEstadosUtil {
 
         lista.add(new short[]{adiversario, codJogador, codJogador, codJogador, codJogador});
         lista.add(new short[]{codJogador, codJogador, codJogador, codJogador, adiversario});
+
+        lista.add(new short[]{codJogador, codJogador, codJogador, adiversario});
+        lista.add(new short[]{adiversario, codJogador, codJogador, codJogador});
+
+        lista.add(new short[]{codJogador, codJogador, adiversario});
+        lista.add(new short[]{adiversario, codJogador, codJogador});
+
+        lista.add(new short[]{codJogador, adiversario, codJogador});
 
         return lista;
     }
