@@ -15,15 +15,30 @@ import java.util.List;
  */
 public class TabPreEstadosUtil {
 
-    public static List<short[]> getEstadoCancelaDerrotas(short codJogador) {
+    public static List<short[]> getEstadoCancelaDerrotasBaixaPrioridade(short codJogador) {
+        List<short[]> lista = new ArrayList<>();
+
+        short adiversario = TabuleiroUtil.trocaJogador(codJogador);
+
+        lista.add(new short[]{adiversario, adiversario, codJogador, CodigoTabuleiro.VAZIO, CodigoTabuleiro.VAZIO});
+        lista.add(new short[]{CodigoTabuleiro.VAZIO, CodigoTabuleiro.VAZIO, adiversario, adiversario, codJogador});
+
+        return lista;
+    }
+
+    public static List<short[]> getEstadoCancelaDerrotasPrioridadeNormal(short codJogador) {
         List<short[]> lista = new ArrayList<>();
 
         short adiversario = TabuleiroUtil.trocaJogador(codJogador);
 
         lista.add(new short[]{adiversario, adiversario, adiversario, codJogador, CodigoTabuleiro.VAZIO});
+        lista.add(new short[]{CodigoTabuleiro.VAZIO, adiversario, adiversario, adiversario, codJogador});
         lista.add(new short[]{adiversario, adiversario, codJogador, adiversario, CodigoTabuleiro.VAZIO});
+        lista.add(new short[]{CodigoTabuleiro.VAZIO, adiversario, adiversario, codJogador, adiversario});
         lista.add(new short[]{adiversario, codJogador, adiversario, adiversario, CodigoTabuleiro.VAZIO});
+        lista.add(new short[]{CodigoTabuleiro.VAZIO, adiversario, codJogador, adiversario, adiversario});
         lista.add(new short[]{codJogador, adiversario, adiversario, adiversario, CodigoTabuleiro.VAZIO});
+        lista.add(new short[]{CodigoTabuleiro.VAZIO, codJogador, adiversario, adiversario, adiversario});
 
         return lista;
     }
@@ -33,10 +48,17 @@ public class TabPreEstadosUtil {
 
         short adiversario = TabuleiroUtil.trocaJogador(codJogador);
 
+        lista.add(new short[]{adiversario, adiversario, adiversario, codJogador, CodigoTabuleiro.VAZIO,});
         lista.add(new short[]{CodigoTabuleiro.VAZIO, adiversario, adiversario, adiversario, codJogador});
-        lista.add(new short[]{CodigoTabuleiro.VAZIO, adiversario, adiversario, codJogador, adiversario, CodigoTabuleiro.VAZIO});
-        lista.add(new short[]{CodigoTabuleiro.VAZIO, adiversario, codJogador, adiversario, adiversario, CodigoTabuleiro.VAZIO});
-        lista.add(new short[]{CodigoTabuleiro.VAZIO, codJogador, adiversario, adiversario, adiversario, CodigoTabuleiro.VAZIO});
+
+        lista.add(new short[]{adiversario, adiversario, codJogador, adiversario, CodigoTabuleiro.VAZIO});
+        lista.add(new short[]{CodigoTabuleiro.VAZIO, adiversario, adiversario, codJogador, adiversario});
+
+        lista.add(new short[]{adiversario, codJogador, adiversario, adiversario, CodigoTabuleiro.VAZIO});
+        lista.add(new short[]{CodigoTabuleiro.VAZIO, adiversario, codJogador, adiversario, adiversario});
+
+        lista.add(new short[]{codJogador, adiversario, adiversario, adiversario, CodigoTabuleiro.VAZIO});
+        lista.add(new short[]{CodigoTabuleiro.VAZIO, codJogador, adiversario, adiversario, adiversario});
 
         return lista;
     }

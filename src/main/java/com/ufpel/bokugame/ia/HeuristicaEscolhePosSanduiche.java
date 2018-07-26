@@ -56,7 +56,7 @@ public class HeuristicaEscolhePosSanduiche {
     public Tupla verificaSanduicheDiagonalPrincipal(Nodo nodo, List<Tupla> jogadasPossiveis) {
         short[][] tabuleiro = nodo.getArrayTabuleiro();
 
-        List<short[]> sanduiches = TabPreEstadosUtil.getEstadoCancelaDerrotas(nodo.getJogador());
+        List<short[]> sanduiches = TabPreEstadosUtil.getEstadosSanduichesParaEscolha(nodo.getJogador());
 
         short[] sequencia = new short[11];
         for (Tupla jogada : jogadasPossiveis) {
@@ -86,7 +86,7 @@ public class HeuristicaEscolhePosSanduiche {
     public Tupla verificaSanduicheDiagonalSecundaria(Nodo nodo, List<Tupla> jogadasPossiveis) {
         short[][] tabuleiro = nodo.getArrayTabuleiro();
 
-        List<short[]> sanduiches = TabPreEstadosUtil.getEstadoCancelaDerrotas(nodo.getJogador());
+        List<short[]> sanduiches = TabPreEstadosUtil.getEstadosSanduichesParaEscolha(nodo.getJogador());
 
         short[] sequencia = new short[11];
         for (Tupla jogada : jogadasPossiveis) {
