@@ -5,6 +5,7 @@
  */
 package com.ufpel.bokugame.ia;
 
+import com.ufpel.bokugame.base.Jogada;
 import com.ufpel.bokugame.base.Nodo;
 import com.ufpel.bokugame.base.Tupla;
 import com.ufpel.bokugame.util.TabPreEstadosUtil;
@@ -17,17 +18,9 @@ import java.util.List;
  */
 public abstract class Heuristica {
 
-    protected final short pesoEstadoNormal = 1;
-    protected final short pesoEstadoRegular = 5;
-    protected final short pesoEstadoBom = 15;
-    protected final short pesoEstadoOtimo = 60;
-    protected final short pesoEstadoSanduicheOtimo = 50;
-    protected final short pesoCDBaixaPrioridade = 1;
-    protected final short pesoCDMediaPrioridade = 30;
-    protected final short pesoCDAltaPrioridade = 100;
     protected final short pesoEstadoVitoria = Short.MAX_VALUE;
 
-    public abstract void calcAndSet(Nodo nodo);
+    public abstract void calcAndSet(Nodo nodo, List<Jogada> estados);
 
     public void verificaESetaEstadoFinal(Nodo nodo) {
 
@@ -121,6 +114,15 @@ public abstract class Heuristica {
                 countColunaPontos += peso;
                 // return peso;
             }
+        }
+        return countColunaPontos;
+    }
+
+    protected float aplicaHeuristicas(short[] estado, short[] tabuleiro, float peso) {
+        float countColunaPontos = 0;
+        if (TabPreEstadosUtil.contains(tabuleiro, estado)) {
+            countColunaPontos += peso;
+            // return peso;
         }
         return countColunaPontos;
     }

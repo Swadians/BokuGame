@@ -6,8 +6,11 @@
 package com.ufpel.bokugame.ia;
 
 import com.ufpel.bokugame.base.CodigoTabuleiro;
+import com.ufpel.bokugame.base.Jogada;
 import com.ufpel.bokugame.base.Nodo;
+import com.ufpel.bokugame.util.TabPreEstadosUtil;
 import com.ufpel.bokugame.util.TabuleiroUtil;
+import java.util.List;
 import java.util.Stack;
 
 /**
@@ -17,10 +20,14 @@ import java.util.Stack;
 public class BuscaMinMax implements Busca {
 
     @Override
-    public Nodo Busca(Nodo base, short profundidade, short codJogador, Heuristica heuristica) {
+    public Nodo Busca(Nodo raiz, short profundidade, short codJogador, Heuristica heuristica, List<Float> notas) {
         Stack<Nodo> pilhaDeNodos = new Stack<>();
+        TabPreEstadosUtil tab = new TabPreEstadosUtil();
 
-        pilhaDeNodos.add(base);
+        List<Jogada> jogadasA = tab.getJogadas(CodigoTabuleiro.JOGADOR_A, notas);
+        List<Jogada> jogadasB = tab.getJogadas(CodigoTabuleiro.JOGADOR_B, notas);
+
+        pilhaDeNodos.add(raiz);
 
         while (!pilhaDeNodos.empty()) {
 
@@ -28,13 +35,15 @@ public class BuscaMinMax implements Busca {
 
             if (!aProcurar.isVisitado()) {
                 aProcurar.setVisitado();
-                short codJogatorAtual = trocaJogador(aProcurar.getJogador());
+                short codJogatorAtual = TabuleiroUtil.trocaJogador(aProcurar.getJogador());
 
                 heuristica.verificaESetaEstadoFinal(aProcurar);
                 if (!aProcurar.isEstadoFinal() && TabuleiroUtil.Profundidade(aProcurar) < profundidade) {
                     pilhaDeNodos.addAll(TabuleiroUtil.geraJogadas(aProcurar, codJogatorAtual));
                 } else if (!aProcurar.isEstadoFinal()) {
-                    heuristica.calcAndSet(aProcurar);
+                    List<Jogada> jogadas = (aProcurar.getJogador() == CodigoTabuleiro.JOGADOR_A) ? jogadasA : jogadasB;
+
+                    heuristica.calcAndSet(aProcurar, jogadas);
 
                     this.podaAlphaBeta(aProcurar, codJogador, pilhaDeNodos);
                     this.calcMinMax(aProcurar, codJogador, pilhaDeNodos);
@@ -44,7 +53,7 @@ public class BuscaMinMax implements Busca {
                 this.calcMinMax(aProcurar, codJogador, pilhaDeNodos);
             }
         }
-        return base;
+        return raiz;
     }
 
     private void calcMinMax(Nodo aProcurar, short codJogador, Stack<Nodo> pilhaDeNodos) {
@@ -90,12 +99,5 @@ public class BuscaMinMax implements Busca {
         while (pilhaDeNodos.peek().pai == pai) {
             pilhaDeNodos.pop();
         }
-    }
-
-    private short trocaJogador(short codJogatorAtual) {
-        short tmp = (codJogatorAtual == CodigoTabuleiro.JOGADOR_A)
-                ? CodigoTabuleiro.JOGADOR_B
-                : CodigoTabuleiro.JOGADOR_A;
-        return tmp;
     }
 }

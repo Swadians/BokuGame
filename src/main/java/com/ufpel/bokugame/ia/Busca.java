@@ -6,6 +6,7 @@
 package com.ufpel.bokugame.ia;
 
 import com.ufpel.bokugame.base.Nodo;
+import java.util.List;
 
 /**
  *
@@ -13,6 +14,6 @@ import com.ufpel.bokugame.base.Nodo;
  */
 public interface Busca {
 
-    public Nodo Busca(Nodo base, short profundidade, short codJogador, Heuristica heuristica);
+    public Nodo Busca(Nodo base, short profundidade, short codJogador, Heuristica heuristica, List<Float> notas);
 
 }

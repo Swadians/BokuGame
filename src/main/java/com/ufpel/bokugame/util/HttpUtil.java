@@ -28,6 +28,8 @@ public class HttpUtil {
     private final String urlJogador;
     private final String urlEstadoAtualTabuleiro;
     private final String urlPosUltimaJoga;
+    private final String urlNumMovimentos;
+    private boolean jogadorVenceu;
 
     public HttpUtil(String urlBase) {
         this.urlBase = urlBase;
@@ -36,6 +38,7 @@ public class HttpUtil {
         this.urlJogador = urlBase + "/jogador";
         this.urlEstadoAtualTabuleiro = urlBase + "/tabuleiro";
         this.urlPosUltimaJoga = urlBase + "/ultima_jogada";
+        this.urlNumMovimentos = urlBase + "/num_movimentos";
     }
 
     private String getRawMovimentosPossiveis() {
@@ -168,11 +171,35 @@ public class HttpUtil {
             Scanner sc = new Scanner(new InputStreamReader(connection.getInputStream()));
 
             String response = sc.nextLine();
+
+            this.jogadorVenceu = response.contains("0") && response.contains("" + numJogador);
             return response.contains("1") || response.contains("2");
 
         } catch (IOException e) {
             System.out.println(e);
             return false;
+        }
+    }
+
+    public boolean jogadorVenceu() {
+
+        return this.jogadorVenceu;
+    }
+
+    public short getNumMovimentos() {
+        try {
+            URL url = new URL(this.urlNumMovimentos);
+            HttpURLConnection connection = makeRequest(url);
+
+            Scanner sc = new Scanner(new InputStreamReader(connection.getInputStream()));
+
+            String response = sc.nextLine();
+
+            return Short.parseShort(response);
+
+        } catch (IOException | NumberFormatException e) {
+            System.out.println(e);
+            return -1;
         }
     }
 

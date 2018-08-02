@@ -22,14 +22,14 @@ import java.util.Random;
  *
  * @author WeslenSchiavon
  */
-public class Test {
+public class BokuGame {
 
-    public static void main(String[] args) throws MalformedURLException, IOException, InterruptedException {
+    public static boolean Executa(String[] args, List<Float> notas) throws MalformedURLException, IOException, InterruptedException {
         Busca busca = new BuscaProfundidadeParalela();
 
-        HttpUtil httpUtil = new HttpUtil("http://" + args[0] + ":8080");
+        HttpUtil httpUtil = new HttpUtil("http://" + args[0] + ":" + args[1]);
 
-        short jogador = Short.parseShort(args[1]);
+        short jogador = Short.parseShort(args[2]);
         short adversario = TabuleiroUtil.trocaJogador(jogador);
         int codJogadorAtual = jogador;
         while (codJogadorAtual != 0) {
@@ -57,7 +57,7 @@ public class Test {
 
                     long startTime = System.currentTimeMillis();
 
-                    Nodo resp = busca.Busca(raiz, (short) 3, jogador, new HeuristicaBuscaPontos());
+                    Nodo resp = busca.Busca(raiz, (short) 3, jogador, new HeuristicaBuscaPontos(), notas);
 
                     if (!httpUtil.movePeca(jogador, resp.getJogada().coluna, resp.getJogada().linha)) {
                         System.out.println("Jogada invalida!");
@@ -78,9 +78,10 @@ public class Test {
                 }
 
             } else {
-                Thread.sleep(4000);
+                Thread.sleep(100);
             }
         }
 
+        return httpUtil.jogadorVenceu();
     }
 }

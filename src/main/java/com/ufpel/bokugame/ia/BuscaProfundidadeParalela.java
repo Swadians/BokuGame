@@ -6,7 +6,6 @@
 package com.ufpel.bokugame.ia;
 
 import com.ufpel.bokugame.base.Nodo;
-import com.ufpel.bokugame.util.IaUtil;
 import com.ufpel.bokugame.util.TabuleiroUtil;
 import java.util.List;
 
@@ -17,24 +16,12 @@ import java.util.List;
 public class BuscaProfundidadeParalela implements Busca {
 
     @Override
-    public Nodo Busca(Nodo base, short profundidade, short codJogador, Heuristica heuristica) {
+    public Nodo Busca(Nodo base, short profundidade, short codJogador, Heuristica heuristica, List<Float> notas) {
         Busca buscaProfundidadeIterativa = new BuscaMinMax();
         List<Nodo> jogadasPossiveis = TabuleiroUtil.geraJogadas(base, codJogador);
-        List<Nodo> jogadasPossiveisDerrotas = TabuleiroUtil.geraJogadas(base, codJogador);
 
-        jogadasPossiveisDerrotas.parallelStream().forEach(nodo -> {
-            buscaProfundidadeIterativa.Busca(nodo, (short) 1, codJogador, new HeuristicaIdentificaJogadasPrioritarias());
-        });
-
-        Nodo possivelImpedimentoDerrota = this.getMaiorHeuristica(jogadasPossiveisDerrotas);
-        if (possivelImpedimentoDerrota.getValorHeuristico() > 0) {
-            return possivelImpedimentoDerrota;
-        }
-        jogadasPossiveisDerrotas = null;
-
-        short calcBestPleis = IaUtil.calcBestPleis(jogadasPossiveis.size());
         jogadasPossiveis.parallelStream().forEach(nodo -> {
-            buscaProfundidadeIterativa.Busca(nodo, calcBestPleis, codJogador, heuristica);
+            buscaProfundidadeIterativa.Busca(nodo, profundidade, codJogador, heuristica, notas);
         });
         Nodo maiorHeuristica = this.getMaiorHeuristica(jogadasPossiveis);
 

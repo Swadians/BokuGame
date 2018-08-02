@@ -6,6 +6,7 @@
 package com.ufpel.bokugame.util;
 
 import com.ufpel.bokugame.base.CodigoTabuleiro;
+import com.ufpel.bokugame.base.Jogada;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,67 +16,45 @@ import java.util.List;
  */
 public class TabPreEstadosUtil {
 
-    public static List<short[]> getEstadoCancelaDerrotasBaixaPrioridade(short codJogador) {
-        List<short[]> lista = new ArrayList<>();
+    private List<Jogada> jogadasA;
+    private List<Jogada> jogadasB;
 
+    public TabPreEstadosUtil() {
+        this.jogadasA = new ArrayList<>();
+        this.jogadasB = new ArrayList<>();
+
+        List<short[]> estadosPossiveosA = TabPreEstadosUtil.getEstadosPossiveos(CodigoTabuleiro.JOGADOR_A);
+        List<short[]> estadosPossiveosB = TabPreEstadosUtil.getEstadosPossiveos(CodigoTabuleiro.JOGADOR_B);
+
+        estadosPossiveosA.forEach(estado -> this.jogadasA.add(new Jogada(estado)));
+        estadosPossiveosB.forEach(estado -> this.jogadasB.add(new Jogada(estado)));
+    }
+
+    public static List<short[]> getEstadosPossiveos(short codJogador) {
+        List<short[]> lista = new ArrayList<>();
         short adiversario = TabuleiroUtil.trocaJogador(codJogador);
 
         lista.add(new short[]{CodigoTabuleiro.VAZIO, adiversario, adiversario, codJogador, CodigoTabuleiro.VAZIO});
         lista.add(new short[]{CodigoTabuleiro.VAZIO, adiversario, adiversario, codJogador, CodigoTabuleiro.VAZIO});
         lista.add(new short[]{CodigoTabuleiro.VAZIO, adiversario, codJogador, adiversario, CodigoTabuleiro.VAZIO});
-
-        return lista;
-    }
-
-    public static List<short[]> getEstadoCancelaDerrotasMediaPrioridade(short codJogador) {
-        List<short[]> lista = new ArrayList<>();
-
-        short adiversario = TabuleiroUtil.trocaJogador(codJogador);
-
         lista.add(new short[]{adiversario, adiversario, adiversario, codJogador, CodigoTabuleiro.VAZIO,});
         lista.add(new short[]{CodigoTabuleiro.VAZIO, adiversario, adiversario, adiversario, codJogador});
-
         lista.add(new short[]{adiversario, adiversario, codJogador, adiversario, CodigoTabuleiro.VAZIO});
         lista.add(new short[]{CodigoTabuleiro.VAZIO, adiversario, adiversario, codJogador, adiversario});
-
         lista.add(new short[]{adiversario, codJogador, adiversario, adiversario, CodigoTabuleiro.VAZIO});
         lista.add(new short[]{CodigoTabuleiro.VAZIO, adiversario, codJogador, adiversario, adiversario});
-
         lista.add(new short[]{codJogador, adiversario, adiversario, adiversario, CodigoTabuleiro.VAZIO});
         lista.add(new short[]{CodigoTabuleiro.VAZIO, codJogador, adiversario, adiversario, adiversario});
-
-        return lista;
-    }
-
-    public static List<short[]> getEstadoCancelaDerrotasAltaPrioridade(short codJogador) {
-        List<short[]> lista = new ArrayList<>();
-
-        short adiversario = TabuleiroUtil.trocaJogador(codJogador);
-
         lista.add(new short[]{codJogador, adiversario, adiversario, adiversario, adiversario});
         lista.add(new short[]{adiversario, codJogador, adiversario, adiversario, adiversario});
         lista.add(new short[]{adiversario, adiversario, codJogador, adiversario, adiversario});
         lista.add(new short[]{adiversario, adiversario, adiversario, codJogador, adiversario});
         lista.add(new short[]{adiversario, adiversario, adiversario, adiversario, codJogador});
-
-        return lista;
-    }
-
-    public static List<short[]> getEstadosNormais(short codJogador) {
-        List<short[]> lista = new ArrayList<>();
-
         lista.add(new short[]{codJogador, CodigoTabuleiro.VAZIO, CodigoTabuleiro.VAZIO, CodigoTabuleiro.VAZIO, CodigoTabuleiro.VAZIO});
         lista.add(new short[]{CodigoTabuleiro.VAZIO, codJogador, CodigoTabuleiro.VAZIO, CodigoTabuleiro.VAZIO, CodigoTabuleiro.VAZIO});
         lista.add(new short[]{CodigoTabuleiro.VAZIO, CodigoTabuleiro.VAZIO, codJogador, CodigoTabuleiro.VAZIO, CodigoTabuleiro.VAZIO});
         lista.add(new short[]{CodigoTabuleiro.VAZIO, CodigoTabuleiro.VAZIO, CodigoTabuleiro.VAZIO, codJogador, CodigoTabuleiro.VAZIO});
         lista.add(new short[]{CodigoTabuleiro.VAZIO, CodigoTabuleiro.VAZIO, CodigoTabuleiro.VAZIO, CodigoTabuleiro.VAZIO, codJogador});
-
-        return lista;
-    }
-
-    public static List<short[]> getEstadosRegulares(short codJogador) {
-        List<short[]> lista = new ArrayList<>();
-
         lista.add(new short[]{codJogador, codJogador, CodigoTabuleiro.VAZIO, CodigoTabuleiro.VAZIO, CodigoTabuleiro.VAZIO});
         lista.add(new short[]{CodigoTabuleiro.VAZIO, codJogador, codJogador, CodigoTabuleiro.VAZIO, CodigoTabuleiro.VAZIO});
         lista.add(new short[]{CodigoTabuleiro.VAZIO, CodigoTabuleiro.VAZIO, codJogador, codJogador, CodigoTabuleiro.VAZIO});
@@ -85,13 +64,6 @@ public class TabPreEstadosUtil {
         lista.add(new short[]{codJogador, CodigoTabuleiro.VAZIO, CodigoTabuleiro.VAZIO, CodigoTabuleiro.VAZIO, codJogador,});
         lista.add(new short[]{CodigoTabuleiro.VAZIO, codJogador, CodigoTabuleiro.VAZIO, CodigoTabuleiro.VAZIO, codJogador,});
         lista.add(new short[]{CodigoTabuleiro.VAZIO, CodigoTabuleiro.VAZIO, codJogador, CodigoTabuleiro.VAZIO, codJogador,});
-
-        return lista;
-    }
-
-    public static List<short[]> getEstadosBons(short codJogador) {
-        List<short[]> lista = new ArrayList<>();
-
         lista.add(new short[]{codJogador, codJogador, codJogador, CodigoTabuleiro.VAZIO, CodigoTabuleiro.VAZIO});
         lista.add(new short[]{codJogador, codJogador, CodigoTabuleiro.VAZIO, codJogador, CodigoTabuleiro.VAZIO});
         lista.add(new short[]{codJogador, codJogador, CodigoTabuleiro.VAZIO, CodigoTabuleiro.VAZIO, codJogador});
@@ -99,14 +71,73 @@ public class TabPreEstadosUtil {
         lista.add(new short[]{codJogador, CodigoTabuleiro.VAZIO, CodigoTabuleiro.VAZIO, codJogador, codJogador});
         lista.add(new short[]{CodigoTabuleiro.VAZIO, codJogador, CodigoTabuleiro.VAZIO, codJogador, codJogador});
         lista.add(new short[]{CodigoTabuleiro.VAZIO, CodigoTabuleiro.VAZIO, codJogador, codJogador, codJogador});
+        lista.add(new short[]{CodigoTabuleiro.VAZIO, codJogador, codJogador, codJogador, codJogador, CodigoTabuleiro.VAZIO});
+        lista.add(new short[]{codJogador, codJogador, codJogador, codJogador, codJogador});
 
         return lista;
     }
 
-    public static List<short[]> getEstadosOtimos(short codJogador) {
-        List<short[]> lista = new ArrayList<>();
+    public List<Jogada> getJogadas(short codJogador, List<Float> notas) {
 
-        lista.add(new short[]{CodigoTabuleiro.VAZIO, codJogador, codJogador, codJogador, codJogador, CodigoTabuleiro.VAZIO});
+        if (codJogador == CodigoTabuleiro.JOGADOR_A) {
+            for (int i = 0; i < this.jogadasA.size(); i++) {
+                this.jogadasA.get(i).setNota(notas.get(i));
+            }
+
+            return this.jogadasA;
+        } else {
+            for (int i = 0; i < this.jogadasB.size(); i++) {
+                this.jogadasB.get(i).setNota(notas.get(i));
+            }
+
+            return this.jogadasB;
+        }
+
+    }
+
+    private static List<Jogada> getTodasJogadas(short codJogador) {
+        List<Jogada> lista = new ArrayList<>();
+        short adiversario = TabuleiroUtil.trocaJogador(codJogador);
+
+        lista.add(new Jogada(new short[]{CodigoTabuleiro.VAZIO, adiversario, adiversario, codJogador, CodigoTabuleiro.VAZIO}));
+        lista.add(new Jogada(new short[]{CodigoTabuleiro.VAZIO, adiversario, adiversario, codJogador, CodigoTabuleiro.VAZIO}));
+        lista.add(new Jogada(new short[]{CodigoTabuleiro.VAZIO, adiversario, codJogador, adiversario, CodigoTabuleiro.VAZIO}));
+        lista.add(new Jogada(new short[]{adiversario, adiversario, adiversario, codJogador, CodigoTabuleiro.VAZIO,}));
+        lista.add(new Jogada(new short[]{CodigoTabuleiro.VAZIO, adiversario, adiversario, adiversario, codJogador}));
+        lista.add(new Jogada(new short[]{adiversario, adiversario, codJogador, adiversario, CodigoTabuleiro.VAZIO}));
+        lista.add(new Jogada(new short[]{CodigoTabuleiro.VAZIO, adiversario, adiversario, codJogador, adiversario}));
+        lista.add(new Jogada(new short[]{adiversario, codJogador, adiversario, adiversario, CodigoTabuleiro.VAZIO}));
+        lista.add(new Jogada(new short[]{CodigoTabuleiro.VAZIO, adiversario, codJogador, adiversario, adiversario}));
+        lista.add(new Jogada(new short[]{codJogador, adiversario, adiversario, adiversario, CodigoTabuleiro.VAZIO}));
+        lista.add(new Jogada(new short[]{CodigoTabuleiro.VAZIO, codJogador, adiversario, adiversario, adiversario}));
+        lista.add(new Jogada(new short[]{codJogador, adiversario, adiversario, adiversario, adiversario}));
+        lista.add(new Jogada(new short[]{adiversario, codJogador, adiversario, adiversario, adiversario}));
+        lista.add(new Jogada(new short[]{adiversario, adiversario, codJogador, adiversario, adiversario}));
+        lista.add(new Jogada(new short[]{adiversario, adiversario, adiversario, codJogador, adiversario}));
+        lista.add(new Jogada(new short[]{adiversario, adiversario, adiversario, adiversario, codJogador}));
+        lista.add(new Jogada(new short[]{codJogador, CodigoTabuleiro.VAZIO, CodigoTabuleiro.VAZIO, CodigoTabuleiro.VAZIO, CodigoTabuleiro.VAZIO}));
+        lista.add(new Jogada(new short[]{CodigoTabuleiro.VAZIO, codJogador, CodigoTabuleiro.VAZIO, CodigoTabuleiro.VAZIO, CodigoTabuleiro.VAZIO}));
+        lista.add(new Jogada(new short[]{CodigoTabuleiro.VAZIO, CodigoTabuleiro.VAZIO, codJogador, CodigoTabuleiro.VAZIO, CodigoTabuleiro.VAZIO}));
+        lista.add(new Jogada(new short[]{CodigoTabuleiro.VAZIO, CodigoTabuleiro.VAZIO, CodigoTabuleiro.VAZIO, codJogador, CodigoTabuleiro.VAZIO}));
+        lista.add(new Jogada(new short[]{CodigoTabuleiro.VAZIO, CodigoTabuleiro.VAZIO, CodigoTabuleiro.VAZIO, CodigoTabuleiro.VAZIO, codJogador}));
+        lista.add(new Jogada(new short[]{codJogador, codJogador, CodigoTabuleiro.VAZIO, CodigoTabuleiro.VAZIO, CodigoTabuleiro.VAZIO}));
+        lista.add(new Jogada(new short[]{CodigoTabuleiro.VAZIO, codJogador, codJogador, CodigoTabuleiro.VAZIO, CodigoTabuleiro.VAZIO}));
+        lista.add(new Jogada(new short[]{CodigoTabuleiro.VAZIO, CodigoTabuleiro.VAZIO, codJogador, codJogador, CodigoTabuleiro.VAZIO}));
+        lista.add(new Jogada(new short[]{CodigoTabuleiro.VAZIO, CodigoTabuleiro.VAZIO, CodigoTabuleiro.VAZIO, codJogador, codJogador,}));
+        lista.add(new Jogada(new short[]{codJogador, CodigoTabuleiro.VAZIO, codJogador, CodigoTabuleiro.VAZIO, CodigoTabuleiro.VAZIO}));
+        lista.add(new Jogada(new short[]{codJogador, CodigoTabuleiro.VAZIO, CodigoTabuleiro.VAZIO, codJogador, CodigoTabuleiro.VAZIO}));
+        lista.add(new Jogada(new short[]{codJogador, CodigoTabuleiro.VAZIO, CodigoTabuleiro.VAZIO, CodigoTabuleiro.VAZIO, codJogador,}));
+        lista.add(new Jogada(new short[]{CodigoTabuleiro.VAZIO, codJogador, CodigoTabuleiro.VAZIO, CodigoTabuleiro.VAZIO, codJogador,}));
+        lista.add(new Jogada(new short[]{CodigoTabuleiro.VAZIO, CodigoTabuleiro.VAZIO, codJogador, CodigoTabuleiro.VAZIO, codJogador,}));
+        lista.add(new Jogada(new short[]{codJogador, codJogador, codJogador, CodigoTabuleiro.VAZIO, CodigoTabuleiro.VAZIO}));
+        lista.add(new Jogada(new short[]{codJogador, codJogador, CodigoTabuleiro.VAZIO, codJogador, CodigoTabuleiro.VAZIO}));
+        lista.add(new Jogada(new short[]{codJogador, codJogador, CodigoTabuleiro.VAZIO, CodigoTabuleiro.VAZIO, codJogador}));
+        lista.add(new Jogada(new short[]{codJogador, CodigoTabuleiro.VAZIO, codJogador, CodigoTabuleiro.VAZIO, codJogador}));
+        lista.add(new Jogada(new short[]{codJogador, CodigoTabuleiro.VAZIO, CodigoTabuleiro.VAZIO, codJogador, codJogador}));
+        lista.add(new Jogada(new short[]{CodigoTabuleiro.VAZIO, codJogador, CodigoTabuleiro.VAZIO, codJogador, codJogador}));
+        lista.add(new Jogada(new short[]{CodigoTabuleiro.VAZIO, CodigoTabuleiro.VAZIO, codJogador, codJogador, codJogador}));
+        lista.add(new Jogada(new short[]{CodigoTabuleiro.VAZIO, codJogador, codJogador, codJogador, codJogador, CodigoTabuleiro.VAZIO}));
+        lista.add(new Jogada(new short[]{codJogador, codJogador, codJogador, codJogador, codJogador}));
 
         return lista;
     }
