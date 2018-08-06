@@ -20,6 +20,14 @@ import java.util.Random;
  */
 public class AlgoritimoGeneticoManager {
 
+    /**
+     * Executa o jogo e retorna um valor euristico do resultado daquela jogada
+     *
+     * @param args - endereço ip, porta que o servidor roda, codigo Jogador:
+     * 127.0.0.1 8080 1
+     * @param notas - lista de notas para cada cromossomo
+     * @return
+     */
     public int executaJogo(String[] args, List<Float> notas) {
         try {
             HttpUtil http = new HttpUtil("http://" + args[0] + ":" + args[1]);
@@ -41,8 +49,15 @@ public class AlgoritimoGeneticoManager {
 
     }
 
-    // int nota = random.nextInt(1000) * (random.nextBoolean() ? -1 : 1);
+    /**
+     * Gera uma geração de cromossomos
+     *
+     * @param tamPopulacao - tamanho total da geração
+     * @param notaMaxima - nota maxima que cada cromossomo pode ter
+     * @return
+     */
     public List<Cromossomo> geraCromossomos(int tamPopulacao, int notaMaxima) {
+        // int nota = random.nextInt(1000) * (random.nextBoolean() ? -1 : 1);
         List<Cromossomo> cromossomos = new ArrayList<>();
         Random random = new Random();
 
@@ -59,6 +74,27 @@ public class AlgoritimoGeneticoManager {
         }
 
         return cromossomos;
+    }
+
+    /**
+     * Executa o cruzamento bazeado na função dada como parametro
+     *
+     * @param cromossomos lista de cromossomos para cruzamento
+     * @param heuristica heuristica de cruzamento
+     * @return List de cromossomos filhos
+     */
+    public List<Cromossomo> fazCruzamento(List<Cromossomo> cromossomos, Cruzamento heuristica) {
+        List<Cromossomo> filhos = new ArrayList<>();
+        int tamanhoMaximo = cromossomos.size() + 1;
+
+        for (int i = 0; i < tamanhoMaximo; i += 2) {
+            Cromossomo paiA = cromossomos.get(i);
+            Cromossomo paiB = cromossomos.get(i + 1);
+
+            filhos.addAll(heuristica.cruza(paiA.getNotas(), paiB.getNotas()));
+        }
+
+        return filhos;
     }
 
 }
