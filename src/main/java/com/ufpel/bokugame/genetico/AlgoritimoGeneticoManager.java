@@ -36,6 +36,7 @@ public class AlgoritimoGeneticoManager {
 
             short numMovimentos = http.getNumMovimentos();
 
+            http.reiniciaTabuleiro();
             if (venceu) {
                 return 1000 - numMovimentos;
             } else {
@@ -85,7 +86,7 @@ public class AlgoritimoGeneticoManager {
      */
     public List<Cromossomo> fazCruzamento(List<Cromossomo> cromossomos, Cruzamento heuristica) {
         List<Cromossomo> filhos = new ArrayList<>();
-        int tamanhoMaximo = cromossomos.size() + 1;
+        int tamanhoMaximo = cromossomos.size();
 
         for (int i = 0; i < tamanhoMaximo; i += 2) {
             Cromossomo paiA = cromossomos.get(i);
@@ -97,4 +98,17 @@ public class AlgoritimoGeneticoManager {
         return filhos;
     }
 
+    /**
+     * Aplica mutação nos cromossomos passados
+     *
+     * @param cromossomos lista de cromossomos a ser mutada
+     * @param mutacao tipo de mutacao
+     * @return lista de cromossomos
+     */
+    public List<Cromossomo> aplicaMutacao(List<Cromossomo> cromossomos, Mutacao mutacao) {
+        List<Cromossomo> filhos = new ArrayList<>();
+
+        cromossomos.forEach(cromossomo -> filhos.add(mutacao.muta(cromossomo)));
+        return filhos;
+    }
 }

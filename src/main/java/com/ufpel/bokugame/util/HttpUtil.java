@@ -10,11 +10,14 @@ import com.ufpel.bokugame.base.Tupla;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -29,6 +32,7 @@ public class HttpUtil {
     private final String urlEstadoAtualTabuleiro;
     private final String urlPosUltimaJoga;
     private final String urlNumMovimentos;
+    private final String urlReiniciaJogo;
     private boolean jogadorVenceu;
 
     public HttpUtil(String urlBase) {
@@ -39,6 +43,7 @@ public class HttpUtil {
         this.urlEstadoAtualTabuleiro = urlBase + "/tabuleiro";
         this.urlPosUltimaJoga = urlBase + "/ultima_jogada";
         this.urlNumMovimentos = urlBase + "/num_movimentos";
+        this.urlReiniciaJogo = urlBase + "/reiniciar";
     }
 
     private String getRawMovimentosPossiveis() {
@@ -110,6 +115,19 @@ public class HttpUtil {
         }
 
         return tuplas;
+    }
+
+    public void reiniciaTabuleiro() {
+
+        try {
+            URL url = new URL(this.urlReiniciaJogo);
+            HttpURLConnection request = this.makeRequest(url);
+            request.getInputStream();
+        } catch (MalformedURLException ex) {
+            Logger.getLogger(HttpUtil.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(HttpUtil.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     private String getRawTabuleiroAtual() {

@@ -5,13 +5,11 @@
  */
 package com.ufpel.bokugame.genetico;
 
-import java.util.List;
-
 /**
  *
  * @author Weslen
  */
 public interface Mutacao {
 
-    List<Cromossomo> muta(List<Cromossomo> cromossomos);
+    public Cromossomo muta(Cromossomo cromossomo);
 }

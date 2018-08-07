@@ -11,7 +11,7 @@ import java.util.List;
  *
  * @author Weslen
  */
-public class Cromossomo {
+public class Cromossomo implements Comparable<Cromossomo> {
 
     private final List<Float> notas;
     private int valorHeuristico;
@@ -30,6 +30,16 @@ public class Cromossomo {
 
     public List<Float> getNotas() {
         return notas;
+    }
+
+    @Override
+    public int compareTo(Cromossomo other) {
+        if (this.valorHeuristico > other.valorHeuristico) {
+            return 1;
+        } else if (this.valorHeuristico < other.valorHeuristico) {
+            return -1;
+        }
+        return 0;
     }
 
 }
