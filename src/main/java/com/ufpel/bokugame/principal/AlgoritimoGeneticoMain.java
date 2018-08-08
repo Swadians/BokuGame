@@ -26,6 +26,7 @@ public class AlgoritimoGeneticoMain {
         List<Cromossomo> populacao = agManager.geraCromossomos(10, 1000);
 
         for (int i = 0; i < 10; i++) {
+            System.out.println("Populacao: " + i);
             List<Cromossomo> filhos = agManager.fazCruzamento(populacao, new CruzamentoPorMedia());
             filhos = agManager.aplicaMutacao(filhos, new MutacaoSomaAleatoria(0.1f, 10));
 
