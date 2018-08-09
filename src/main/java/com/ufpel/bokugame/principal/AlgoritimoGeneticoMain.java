@@ -31,11 +31,12 @@ public class AlgoritimoGeneticoMain {
             filhos = agManager.aplicaMutacao(filhos, new MutacaoSomaAleatoria(0.1f, 10));
 
             populacao.addAll(filhos);
-            for (Cromossomo cromossomo : populacao) {
+
+            populacao.parallelStream().forEach(cromossomo -> {
                 int valorHeuristico = agManager.executaJogo(argumentos, cromossomo.getNotas());
 
                 cromossomo.setValorHeuristico(valorHeuristico);
-            }
+            });
 
             Collections.sort(populacao);
 
