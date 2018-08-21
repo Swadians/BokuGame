@@ -6,6 +6,7 @@
 package com.ufpel.bokugame.genetico;
 
 import java.util.List;
+import java.util.Objects;
 
 /**
  *
@@ -30,6 +31,31 @@ public class Cromossomo implements Comparable<Cromossomo> {
 
     public List<Float> getNotas() {
         return notas;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 71 * hash + Objects.hashCode(this.notas);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Cromossomo other = (Cromossomo) obj;
+        if (!Objects.equals(this.notas, other.notas)) {
+            return false;
+        }
+        return true;
     }
 
     @Override

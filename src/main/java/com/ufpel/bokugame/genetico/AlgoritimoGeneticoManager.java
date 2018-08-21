@@ -11,6 +11,7 @@ import com.ufpel.bokugame.util.HttpUtil;
 import com.ufpel.bokugame.util.TabPreEstadosUtil;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
@@ -67,7 +68,7 @@ public class AlgoritimoGeneticoManager {
         for (int j = 0; j < tamPopulacao; j++) {
             List<Float> notas = new ArrayList<>();
             for (int i = 0; i < qtdJogadas; i++) {
-                float nota = (float) random.nextInt(notaMaxima);
+                float nota = (float) random.nextInt(notaMaxima) * (random.nextBoolean() ? -1 : 1);
 
                 notas.add(nota);
             }
@@ -88,7 +89,7 @@ public class AlgoritimoGeneticoManager {
         List<Cromossomo> filhos = new ArrayList<>();
         int tamanhoMaximo = cromossomos.size();
 
-        for (int i = 0; i < tamanhoMaximo; i += 2) {
+        for (int i = 0; i + 1 < tamanhoMaximo; i += 2) {
             Cromossomo paiA = cromossomos.get(i);
             Cromossomo paiB = cromossomos.get(i + 1);
 
@@ -111,4 +112,59 @@ public class AlgoritimoGeneticoManager {
         cromossomos.forEach(cromossomo -> filhos.add(mutacao.muta(cromossomo)));
         return filhos;
     }
+
+    /**
+     * Seleciona geração futura
+     *
+     * @param cromossomos lista contendo a população atual
+     * @param selecao algoritimo que seleciona a futura população bazeado em
+     * algum criterio
+     * @param tamPopulacao quantidade de cromossomos para a proxima geração
+     * @return nova geração
+     */
+    public List<Cromossomo> aplicaSelecao(List<Cromossomo> cromossomos, Selecao selecao, int tamPopulacao) {
+        List<Cromossomo> retorno = new ArrayList<>();
+
+        Collections.sort(cromossomos);
+        for (int i = 0; i < tamPopulacao; i++) {
+            retorno.add(selecao.aplicaSelecao(cromossomos));
+        }
+
+        Cromossomo melhorCromossomo = cromossomos.get(cromossomos.size() - 1);
+        if (!retorno.contains(melhorCromossomo)) {
+            retorno.add(melhorCromossomo);
+        }
+
+        return retorno;
+    }
+
+    /**
+     * Seleciona geração futura
+     *
+     * @param cromossomos lista contendo a população atual
+     * @param selecao algoritimo que seleciona a futura população bazeado em
+     * algum criterio
+     * @param tamPopulacao quantidade de cromossomos para a proxima geração
+     * @param qtdPaisNovaGeracao numero de pais para serem passados diretamente
+     * para proxima populacao
+     * @return
+     */
+    public List<Cromossomo> aplicaSelecao(List<Cromossomo> cromossomos, Selecao selecao, int tamPopulacao, int qtdPaisNovaGeracao) {
+        List<Cromossomo> retorno = new ArrayList<>();
+
+        Collections.sort(cromossomos);
+        for (int i = 0; i < tamPopulacao; i++) {
+            retorno.add(selecao.aplicaSelecao(cromossomos));
+        }
+        int ultimaPos = cromossomos.size() - 1;
+
+        for (int i = ultimaPos; i > ultimaPos - qtdPaisNovaGeracao; i--) {
+            if (!retorno.contains(cromossomos.get(i))) {
+                retorno.add(cromossomos.get(i));
+            }
+        }
+
+        return retorno;
+    }
+
 }
