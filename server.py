@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
-
 import copy
+import threading
+import multiprocessing
+from sys import argv
 from flask import Flask, render_template, request, jsonify
 from flask_socketio import SocketIO, emit
 
@@ -406,10 +408,6 @@ class Game:
 
 ###### SERVER ######
 
-game = Game()
-game.init_board()
-
-
 @app.route("/minhavez")
 def minhavez():
     player = int(q['player'][0])
@@ -506,8 +504,25 @@ def socketConnected():
     socketio.emit('update', namespace='/socket')
     print('Client connected')
 
+def threaded_function(app, portNumber):
+	game = Game()
+	game.init_board()
 
-PORT_NUMBER = 8080
+	PORT_NUMBER = portNumber
+	app.run(host='0.0.0.0', port=PORT_NUMBER)
 
-if __name__ == "__main__":
-    app.run(host='0.0.0.0', port=PORT_NUMBER)
+file = open("ports", "w")
+for x in range(0, multiprocessing.cpu_count()):
+	portNumber = argv[1] + str(x)
+	
+	file.write(portNumber)
+	file.write("\n")
+	threading.Thread(target = threaded_function, args = (app,portNumber, )).start()
+file.close()
+
+
+
+
+
+
+

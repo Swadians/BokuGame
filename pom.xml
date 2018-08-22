@@ -29,7 +29,7 @@
                     <includeProjectDependencies>true</includeProjectDependencies>
                     <includePluginDependencies>false</includePluginDependencies>
                     <classpathScope>compile</classpathScope>
-                    <mainClass>com.ufpel.bokugame.principal.Test</mainClass>
+                    <mainClass>com.ufpel.bokugame.principal.AlgoritimoGeneticoMain</mainClass>
                     <cleanupDaemonThreads>false</cleanupDaemonThreads> 
                 </configuration>
             </plugin>
@@ -47,7 +47,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>com.ufpel.bokugame.principal.Test</mainClass>
+                            <mainClass>com.ufpel.bokugame.principal.AlgoritimoGeneticoMain</mainClass>
                         </manifest>
                     </archive>
                     <descriptorRefs>
