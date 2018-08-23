@@ -407,6 +407,8 @@ class Game:
 
 
 ###### SERVER ######
+game = Game()
+game.init_board()
 
 @app.route("/minhavez")
 def minhavez():
@@ -505,9 +507,6 @@ def socketConnected():
     print('Client connected')
 
 def threaded_function(app, portNumber):
-	game = Game()
-	game.init_board()
-
 	PORT_NUMBER = portNumber
 	app.run(host='0.0.0.0', port=PORT_NUMBER)
 

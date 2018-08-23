@@ -9,7 +9,7 @@ import com.ufpel.bokugame.genetico.AlgoritimoGeneticoManager;
 import com.ufpel.bokugame.genetico.Cromossomo;
 import com.ufpel.bokugame.genetico.CruzamentoPorMedia;
 import com.ufpel.bokugame.genetico.MutacaoSomaAleatoria;
-import com.ufpel.bokugame.genetico.SelecaoPorRoleta;
+import com.ufpel.bokugame.genetico.SelecaoPorTorneio;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintStream;
@@ -47,14 +47,15 @@ public class AlgoritimoGeneticoMain {
                     cromossomo.setValorHeuristico(valorHeuristico);
                 });
 
-                populacao = agManager.aplicaSelecao(populacao, new SelecaoPorRoleta(), tamPopulacao, 5);
+                populacao = agManager.aplicaSelecao(populacao, new SelecaoPorTorneio(10), tamPopulacao, 1);
 
                 ps.println("Populacao: " + i);
                 int tamNovaPopulacao = populacao.size() - 1;
 
                 Collections.sort(populacao);
-                for (int j = tamNovaPopulacao; j > tamNovaPopulacao - 10; j--) {
-                    ps.println("            " + populacao.get(j).getValorHeuristico());
+                for (int j = tamNovaPopulacao; j > tamNovaPopulacao - 5; j--) {
+                    ps.println("            " + populacao.get(j));
+                    ps.println();
                 }
 
                 ps.println("#######################################################");

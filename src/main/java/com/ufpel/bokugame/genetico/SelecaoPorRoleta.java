@@ -24,12 +24,14 @@ public class SelecaoPorRoleta implements Selecao {
     @Override
     public Cromossomo aplicaSelecao(List<Cromossomo> cromossomos) {
         Random rd = new Random();
-        int ultimaPos = cromossomos.size() - 1;
+        int valorMaximo = cromossomos.parallelStream().mapToInt(i -> i.getValorHeuristico()).reduce(0, Integer::sum);
 
-        int valorSorteado = rd.nextInt(cromossomos.get(ultimaPos).getValorHeuristico() + 1);
+        int valorSorteado = rd.nextInt(valorMaximo);
 
+        int valorTotal = 0;
         for (Cromossomo cromossomo : cromossomos) {
-            if (cromossomo.getValorHeuristico() >= valorSorteado) {
+            valorTotal += cromossomo.getValorHeuristico();
+            if (valorTotal >= valorSorteado) {
                 return cromossomo;
             }
         }

@@ -5,6 +5,7 @@
  */
 package com.ufpel.bokugame.genetico;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -31,6 +32,11 @@ public class Cromossomo implements Comparable<Cromossomo> {
 
     public List<Float> getNotas() {
         return notas;
+    }
+
+    @Override
+    public String toString() {
+        return "Cromossomo{" + "valorHeuristico=" + valorHeuristico + ", notas=" + Arrays.deepToString(this.notas.toArray(new Float[]{})) + '}';
     }
 
     @Override

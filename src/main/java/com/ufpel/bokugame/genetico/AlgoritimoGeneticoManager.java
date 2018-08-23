@@ -31,6 +31,8 @@ public class AlgoritimoGeneticoManager {
      */
     public int executaJogo(String[] args, List<Float> notas) {
         try {
+            int separador = 2;
+            int valorVitoria = 1000000;
             HttpUtil http = new HttpUtil("http://" + args[0] + ":" + args[1]);
 
             boolean venceu = BokuGame.Executa(args, notas);
@@ -39,9 +41,10 @@ public class AlgoritimoGeneticoManager {
 
             http.reiniciaTabuleiro();
             if (venceu) {
-                return 1000 - numMovimentos;
+
+                return valorVitoria - (int) Math.pow(numMovimentos, separador);
             } else {
-                return numMovimentos;
+                return (int) Math.pow(numMovimentos, separador);
             }
 
         } catch (IOException | InterruptedException e) {
@@ -152,12 +155,13 @@ public class AlgoritimoGeneticoManager {
     public List<Cromossomo> aplicaSelecao(List<Cromossomo> cromossomos, Selecao selecao, int tamPopulacao, int qtdPaisNovaGeracao) {
         List<Cromossomo> retorno = new ArrayList<>();
 
-        Collections.sort(cromossomos);
+        Collections.shuffle(cromossomos);
         for (int i = 0; i < tamPopulacao; i++) {
             retorno.add(selecao.aplicaSelecao(cromossomos));
         }
         int ultimaPos = cromossomos.size() - 1;
 
+        Collections.sort(cromossomos);
         for (int i = ultimaPos; i > ultimaPos - qtdPaisNovaGeracao; i--) {
             if (!retorno.contains(cromossomos.get(i))) {
                 retorno.add(cromossomos.get(i));
