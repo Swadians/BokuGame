@@ -510,7 +510,7 @@ def threaded_function(app, portNumber):
 	PORT_NUMBER = portNumber
 	app.run(host='0.0.0.0', port=PORT_NUMBER)
 
-file = open("ports", "w")
+file = open("Ports", "w")
 for x in range(0, multiprocessing.cpu_count()):
 	portNumber = argv[1] + str(x)
 	

@@ -10,11 +10,16 @@ import com.ufpel.bokugame.genetico.Cromossomo;
 import com.ufpel.bokugame.genetico.CruzamentoPorMedia;
 import com.ufpel.bokugame.genetico.MutacaoSomaAleatoria;
 import com.ufpel.bokugame.genetico.SelecaoPorTorneio;
+import com.ufpel.bokugame.util.IoUtil;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintStream;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.BlockingQueue;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -33,6 +38,13 @@ public class AlgoritimoGeneticoMain {
 
         List<Cromossomo> populacao = agManager.geraCromossomos(tamPopulacao, maiorNotaPossivel);
 
+        List<String> listOfPorts = IoUtil.getListOfPorts("Ports");
+        BlockingQueue<String> listaDeProducao = new ArrayBlockingQueue<>(listOfPorts.size());
+
+        listOfPorts.forEach(porta -> {
+            listaDeProducao.offer(porta);
+        });
+
         for (int i = 0; i < 100; i++) {
             try {
                 System.out.println("Populacao: " + i);
@@ -42,9 +54,17 @@ public class AlgoritimoGeneticoMain {
                 populacao.addAll(filhos);
 
                 populacao.forEach(cromossomo -> {
-                    int valorHeuristico = agManager.executaJogo(argumentos, cromossomo.getNotas());
+                    try {
+                        String[] argumentosComPorta = {argumentos[0], listaDeProducao.take(), argumentos[2]};
+                        int valorHeuristico = agManager.executaJogo(argumentosComPorta, cromossomo.getNotas());
 
-                    cromossomo.setValorHeuristico(valorHeuristico);
+                        listaDeProducao.offer(argumentosComPorta[1]);
+                        cromossomo.setValorHeuristico(valorHeuristico);
+                    } catch (InterruptedException ex) {
+                        Logger.getLogger(AlgoritimoGeneticoMain.class.getName()).log(Level.SEVERE, null, ex);
+                        System.out.println("Erro ao tentar obter porta!");
+                    }
+
                 });
 
                 populacao = agManager.aplicaSelecao(populacao, new SelecaoPorTorneio(10), tamPopulacao, 1);
